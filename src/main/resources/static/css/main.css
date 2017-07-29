@@ -258,6 +258,26 @@ td.uh-pre {
     }
 
 }
+
+@media(min-width:992px) and (max-width: 1200px){
+  .col-md-9 {
+    width: 70%;
+  }
+  .col-md-3 {
+    width: 30%;
+  }
+}
+
+@media(min-width: 1200px){
+  .col-md-9 {
+    width: 70%;
+  }
+  .col-md-3 {
+    width: 30%;
+  }
+}
+
+
 /* -------------------------------------------------------- */
 
 .panel.panel-default.panel-not-rounded {
