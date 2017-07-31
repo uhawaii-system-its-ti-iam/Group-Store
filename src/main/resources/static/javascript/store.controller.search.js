@@ -112,11 +112,7 @@
          * @returns {Array<string>} the user's current path
          */
         $scope.getCurrentPath = function() {
-            var path = [];
-            currentPath.forEach(item => {
-                path.push(item.name);
-            });
-            return path;
+            return currentPath.map(item => item.name);
         };
 
         $scope.getDescAtIndex = function(index) {
