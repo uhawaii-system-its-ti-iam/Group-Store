@@ -138,6 +138,44 @@
             return CartService.getGroupsInCart().length;
         };
 
+        $scope.sources = [
+            'All Sources',
+            'Human Resources Information Systems',
+            'Research Corporation of the University of Hawaii',
+            'Student Employment and Cooperative Education',
+            'Student Information Systems',
+            'UH Identity Management System'
+        ];
+
+        $scope.organizations = [
+            'Hawaii Community College',
+            'Honolulu Community College',
+            'Kauai Community College',
+            'Kapiolani Community College',
+            'Leeward Community College',
+            'UH Maui College',
+            'UH Hilo',
+            'UH Manoa',
+            'UH System',
+            'UH West Oahu',
+            'Windward Community College',
+            'Employment Training Center',
+            'East-West Center',
+            'Maui High Performance Computing Center',
+            'Research Corporation of the University of Hawaii',
+            'UH Foundation',
+            'University Laboratory School'
+        ];
+
+        $scope.availableSearchParams = [
+            { key: 'source', name: 'Source', restrictToSuggestedValues: true, suggestedValues: $scope.sources },
+            { key: 'org', name: 'Organization', placeholder: 'Organization', restrictToSuggestedValues: true, suggestedValues: $scope.organizations },
+            { key: 'term', name: 'Term', placeholder: '4-6 Digit Term Code' },
+            { key: 'eac', name: 'EAC', placeholder: 'Employing Agency Code' },
+            { key: 'crn', name: 'CRN', placeholder: 'Course Reference Number'}
+
+        ];
+
         $scope.store = [
             { id: '1', name: 'hawaii.edu:store', description: 'Home', type: 'folder', path: 'hawaii.edu:store'},
             { id: '1', name: 'any-dataOrigin', description: 'All Sources', type: 'folder', path: 'hawaii.edu:store:any-dataOrigin'},

@@ -24,6 +24,12 @@
                         {{ panelText }}
                         <small ng-if="panelDescription">{{ panelDescription }}</small>
                     </h1>
+                    <nit-advanced-searchbox
+                        ng-model="searchParams"
+                        parameters="availableSearchParams"
+                        placeholder="Search for groups by name"
+                        parameterLabel="Available Filters">
+                    </nit-advanced-searchbox>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -31,18 +37,6 @@
                         voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
                         non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </p>
-                    <div class="col-md-8">
-                        <div class="input-group" style="margin-left: -15px;">
-                            <input type="text" class="form-control" placeholder="Search by folder, group path, or group name" />
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-md btn-primary">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <br />
-                    <br />
                     <!-- Start of table view -->
                     <table class="table table-striped table-hover table-responsive">
                         <thead>
