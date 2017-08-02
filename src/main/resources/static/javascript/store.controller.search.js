@@ -167,14 +167,23 @@
             'University Laboratory School'
         ];
 
+        $scope.searchParams = {};
+
         $scope.availableSearchParams = [
             { key: 'source', name: 'Source', restrictToSuggestedValues: true, suggestedValues: $scope.sources },
             { key: 'org', name: 'Organization', placeholder: 'Organization', restrictToSuggestedValues: true, suggestedValues: $scope.organizations },
             { key: 'term', name: 'Term', placeholder: '4-6 Digit Term Code' },
             { key: 'eac', name: 'EAC', placeholder: 'Employing Agency Code' },
             { key: 'crn', name: 'CRN', placeholder: 'Course Reference Number'}
-
         ];
+
+        $scope.isOnStorePage = function() {
+            return !$scope.searchParams.query;
+        };
+
+        $scope.filterBySearchQuery = function(item) {
+            return item.name.includes($scope.searchParams.query);
+        };
 
         $scope.store = [
             { id: '1', name: 'hawaii.edu:store', description: 'Home', type: 'folder', path: 'hawaii.edu:store'},
