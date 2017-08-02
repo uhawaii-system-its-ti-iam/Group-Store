@@ -88,6 +88,58 @@
                     </div>
                 </div>
             </div>
+
+          <button type="button" class="btn btn-primary btn-md pull-right" ng-if="getAmountInCart() > 0" data-toggle="modal" data-target="#myModal">Relationship Mapping</button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Relationship Mapping</h4>
+                </div>
+
+                <div class="modal-body">
+                  <div class="list-group" ng-if="getAmountInCart() > 0">
+                    <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
+                      <div class="media-body" data-toggle="tooltip">
+                        <strong>Group:</strong> {{ group.name }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="venn">
+                    <div id="c1" class="circle">
+                      <p>Group A</p>
+                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans1"></div>
+                    </div>
+
+                    <div id="c2" class="circle" >
+                      <p>Group B</p>
+                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans2"></div>
+                    </div>
+
+                    <div id="j12" class="joined">
+                      <p>Both</p>
+                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="both"></div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
         </div>
     </div>
 </div>
