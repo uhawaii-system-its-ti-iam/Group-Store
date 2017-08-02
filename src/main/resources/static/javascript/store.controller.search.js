@@ -182,7 +182,7 @@
         };
 
         $scope.filterBySearchQuery = function(item) {
-            return item.name.includes($scope.searchParams.query);
+            return item.name.includes($scope.searchParams.query) && item.type === 'group';
         };
 
         $scope.store = [
