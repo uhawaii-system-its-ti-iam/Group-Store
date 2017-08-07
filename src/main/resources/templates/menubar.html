@@ -1,39 +1,40 @@
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" th:fragment="copy" ng-controller="NavbarController">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#casdemo-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" th:href="@{/}">
-                    <img class="img-responsive" th:src="@{/images/seal.jpg}" src="images/seal.jpg" alt=""></img>
-                </a>
-                <a class="navbar-brand uh-nav-app-name" th:href="@{/}">
-                    UH Group Store
-                </a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="casdemo-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/search}">Search for Groups</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/cart}">Cart {{ getAmountInCart() }} <span class="glyphicon glyphicon-shopping-cart"></span></a>
-                    </li>
-                    <li sec:authorize="isAnonymous()">
-                        <a th:href="@{/login}">Log In</a>
-                    </li>
-                    <li sec:authorize="isAuthenticated()">
-                        <a th:href="@{/logout}">Logout</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" th:fragment="copy"
+     ng-controller="NavbarController">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#casdemo-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" th:href="@{/}">
+        <img class="img-responsive" th:src="@{/images/seal.jpg}" src="images/seal.jpg" alt=""></img>
+      </a>
+      <a class="navbar-brand uh-nav-app-name" th:href="@{/}">
+        UH Group Store
+      </a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="casdemo-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a th:href="@{/}">Home</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:href="@{/search}">Search for Groups</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:href="@{/cart}">Cart {{ getAmountInCart() }} <span class="glyphicon glyphicon-shopping-cart"></span></a>
+        </li>
+        <li sec:authorize="isAnonymous()">
+          <a th:href="@{/login}">Log In</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
