@@ -138,6 +138,10 @@
             return CartService.getGroupsInCart().length;
         };
 
+        $scope.isOnSearchPage = function() {
+            return !!searchParams.query;
+        }
+
         $scope.sources = [
             'All Sources',
             'Human Resources Information Systems',
@@ -177,7 +181,7 @@
             { key: 'crn', name: 'CRN', placeholder: 'Course Reference Number'}
         ];
 
-        $scope.isOnStorePage = function() {
+        $scope.isBrowsingThroughStore = function() {
             return !$scope.searchParams.query;
         };
 

@@ -43,12 +43,16 @@
           <!-- Start of table view -->
           <table class="table table-striped table-hover table-responsive">
             <thead>
-            <tr>
+            <tr ng-if="isBrowsingThroughStore()">
               <th>Name</th>
               <th>Description</th>
             </tr>
+            <tr ng-if="!isBrowsingThroughStore()">
+              <th>Group Name</th>
+              <th>Location</th>
+            </tr>
             </thead>
-            <tbody>
+            <tbody ng-if="isBrowsingThroughStore()">
             <tr ng-if="!isAtHomePath()">
               <td>
                 <i class="fa fa-folder"></i>
@@ -57,12 +61,21 @@
               <td>Go back to the previous folder</td>
             </tr>
             <tr ng-repeat="item in store | filter: isInCurrentPath">
-              <td>
-                <i ng-class="getIcon(item)"></i>
-                <a href="#" ng-click="goToPath(item)">{{ item.name }}</a>
-              </td>
-              <td>{{ item.description }}</td>
-            </tr>
+                <td>
+                  <i ng-class="getIcon(item)"></i>
+                  <a href="#" ng-click="goToPath(item)">{{ item.name }}</a>
+                </td>
+                <td>{{ item.description }}</td>
+              </tr>
+            </tbody>
+            <tbody ng-if="!isBrowsingThroughStore()">
+              <tr ng-repeat="item in store | filter: filterBySearchQuery">
+                <td>
+                  <i class="fa fa-group"></i>
+                  <a href="#" ng-click="addToCart(item)">{{ item.name }}</a>
+                </td>
+                <td>{{ item.path }}</td>
+              </tr>
             </tbody>
           </table>
           <!-- End of table view -->
