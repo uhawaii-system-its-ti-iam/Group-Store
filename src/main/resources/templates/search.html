@@ -40,6 +40,9 @@
             voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
             non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           </p>
+          <h4 ng-if="!isBrowsingThroughStore()">
+            Showing {{ (store | filter: filterBySearchQuery).length }} groups for query '{{ searchParams.query }}'
+          </h4>
           <!-- Start of table view -->
           <table class="table table-striped table-hover table-responsive">
             <thead>
