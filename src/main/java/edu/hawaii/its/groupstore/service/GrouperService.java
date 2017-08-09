@@ -22,6 +22,7 @@ public class GrouperService {
     WsQueryFilter queryFilter = new WsQueryFilter();
     queryFilter.setGroupName(query);
     queryFilter.setQueryFilterType("FIND_BY_GROUP_NAME_APPROXIMATE");
+    queryFilter.setStemName("hawaii.edu:store");
 
     findGroupsRequest.assignQueryFilter(queryFilter);
 
