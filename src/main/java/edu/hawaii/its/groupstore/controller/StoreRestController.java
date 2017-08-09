@@ -20,7 +20,7 @@ import edu.hawaii.its.groupstore.service.GrouperService;
 @RestController
 public class StoreRestController {
 
-  private static final Log logger = LogFactory.getLog(RoleRestController.class);
+  private static final Log logger = LogFactory.getLog(StoreRestController.class);
 
   @Autowired
   private GrouperService grouperService;
