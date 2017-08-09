@@ -189,6 +189,11 @@
             <artifactId>angular-mocks</artifactId>
             <version>${angular-mocks-version}</version>
         </dependency>
+        <dependency>
+            <groupId>edu.internet2.middleware.grouper</groupId>
+            <artifactId>grouperClient</artifactId>
+            <version>2.3.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
