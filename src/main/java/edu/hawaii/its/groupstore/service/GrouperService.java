@@ -8,6 +8,11 @@ import edu.internet2.middleware.grouperClient.ws.beans.WsGroup;
 import edu.internet2.middleware.grouperClient.ws.beans.WsQueryFilter;
 import edu.internet2.middleware.grouperClient.ws.beans.WsResultMeta;
 
+import edu.internet2.middleware.grouperClient.api.GcFindStems;
+import edu.internet2.middleware.grouperClient.ws.beans.WsStem;
+import edu.internet2.middleware.grouperClient.ws.beans.WsStemQueryFilter;
+import edu.internet2.middleware.grouperClient.ws.beans.WsFindStemsResults;
+
 @Service
 public class GrouperService {
 
@@ -35,6 +40,31 @@ public class GrouperService {
           ", " + resultMetadata.getResultMessage());
     }
     return results.getGroupResults();
+  }
+
+  /**
+   * Finds stems/folders located in the path given.
+   * @param query the path to look at
+   * @return an array of stems/folders located in the path passed
+   */
+  public WsStem[] findStems(String query) {
+    GcFindStems findStemsRequest = new GcFindStems();
+
+    WsStemQueryFilter queryFilter = new WsStemQueryFilter();
+    queryFilter.setParentStemName(query);
+    queryFilter.setStemQueryFilterType("FIND_BY_PARENT_STEM_NAME");
+
+    findStemsRequest.assignStemQueryFilter(queryFilter);
+
+    WsFindStemsResults results = findStemsRequest.execute();
+
+    WsResultMeta resultMetadata = results.getResultMetadata();
+    if (!"T".equals(resultMetadata.getSuccess())) {
+      throw new RuntimeException("Error finding groups: " + resultMetadata.getSuccess() +
+          ", " + resultMetadata.getResultCode() +
+          ", " + resultMetadata.getResultMessage());
+    }
+    return results.getStemResults();
   }
 
 }

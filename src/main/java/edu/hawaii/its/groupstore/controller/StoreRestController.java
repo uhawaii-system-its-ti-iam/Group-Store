@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.internet2.middleware.grouperClient.ws.beans.WsGroup;
+import edu.internet2.middleware.grouperClient.ws.beans.WsStem;
 
 import edu.hawaii.its.groupstore.service.GrouperService;
 
@@ -30,6 +31,16 @@ public class StoreRestController {
     logger.info("Entered API to find groups...");
     WsGroup[] groupResults = grouperService.findGroups(query);
     List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
+    return ResponseEntity
+        .ok()
+        .body(data);
+  }
+
+  @GetMapping(value = "api/stems/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<WsStem>> stems(@PathVariable String query) {
+    logger.info("Entered API to find children of a stem...");
+    WsStem[] stemResults = grouperService.findStems(query);
+    List<WsStem> data = new ArrayList<WsStem>(Arrays.asList(stemResults));
     return ResponseEntity
         .ok()
         .body(data);
