@@ -17,6 +17,7 @@ import edu.internet2.middleware.grouperClient.ws.beans.WsGroup;
 import edu.internet2.middleware.grouperClient.ws.beans.WsStem;
 
 import edu.hawaii.its.groupstore.service.GrouperService;
+import edu.hawaii.its.groupstore.service.GrouperService.GroupFilterType;
 
 @RestController
 public class StoreRestController {
@@ -26,10 +27,20 @@ public class StoreRestController {
   @Autowired
   private GrouperService grouperService;
 
-  @GetMapping(value = "/api/groups/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/api/groups/name/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<WsGroup>> groups(@PathVariable String query) {
-    logger.info("Entered API to find groups...");
-    WsGroup[] groupResults = grouperService.findGroups(query);
+    logger.info("Entered API to find groups by name...");
+    WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_BY_NAME);
+    List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
+    return ResponseEntity
+        .ok()
+        .body(data);
+  }
+
+  @GetMapping(value = "/api/groups/path/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<WsGroup>> groupsinPath(@PathVariable String query) {
+    logger.info("Entered API to find groups in the path specified...");
+    WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_BY_PATH);
     List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
     return ResponseEntity
         .ok()
