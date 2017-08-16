@@ -18,6 +18,7 @@ import edu.internet2.middleware.grouperClient.ws.beans.WsStem;
 
 import edu.hawaii.its.groupstore.service.GrouperService;
 import edu.hawaii.its.groupstore.service.GrouperService.GroupFilterType;
+import edu.hawaii.its.groupstore.service.GrouperService.StemFilterType;
 
 @RestController
 public class StoreRestController {
@@ -47,14 +48,25 @@ public class StoreRestController {
         .body(data);
   }
 
-  @GetMapping(value = "api/stems/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/api/stems/children/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<WsStem>> stems(@PathVariable String query) {
     logger.info("Entered API to find children of a stem...");
-    WsStem[] stemResults = grouperService.findStems(query);
+    WsStem[] stemResults = grouperService.findStems(query, StemFilterType.FIND_CHILDREN_OF_STEM);
     List<WsStem> data = new ArrayList<WsStem>(Arrays.asList(stemResults));
     return ResponseEntity
         .ok()
         .body(data);
+  }
+
+  @GetMapping(value = "/api/stems/name/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<WsStem>> stemByName(@PathVariable String query) {
+    logger.info("Entered API to find matching stem...");
+    WsStem[] stemResults = grouperService.findStems(query, StemFilterType.FIND_STEM_BY_EXACT_NAME);
+    List<WsStem> data = new ArrayList<WsStem>(Arrays.asList(stemResults));
+    return ResponseEntity
+        .ok()
+        .body(data);
+
   }
 
 }

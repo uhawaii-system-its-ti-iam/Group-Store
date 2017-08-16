@@ -21,6 +21,12 @@ public class GrouperService {
     FIND_BY_PATH
   }
 
+  public enum StemFilterType {
+    FIND_CHILDREN_OF_STEM,
+    FIND_STEM_BY_EXACT_NAME
+  }
+
+
   /**
    * Find groups that match the given query.
    * @param query the group name to search for
@@ -62,14 +68,21 @@ public class GrouperService {
   /**
    * Finds stems/folders located in the path given.
    * @param query the path to look at
+   * @param filterType the method in which stems will be filtered. FIND_CHILDREN_OF_STEM will find folders/stems located
+   *                   in the query passed. FIND_STEM_BY_EXACT_NAME will find the stem/folder matching the query exactly
    * @return an array of stems/folders located in the path passed
    */
-  public WsStem[] findStems(String query) {
+  public WsStem[] findStems(String query, StemFilterType filterType) {
     GcFindStems findStemsRequest = new GcFindStems();
 
     WsStemQueryFilter queryFilter = new WsStemQueryFilter();
-    queryFilter.setParentStemName(query);
-    queryFilter.setStemQueryFilterType("FIND_BY_PARENT_STEM_NAME");
+    if (filterType == StemFilterType.FIND_CHILDREN_OF_STEM) {
+      queryFilter.setParentStemName(query);
+      queryFilter.setStemQueryFilterType("FIND_BY_PARENT_STEM_NAME");
+    } else if (filterType == StemFilterType.FIND_STEM_BY_EXACT_NAME) {
+      queryFilter.setStemName(query);
+      queryFilter.setStemQueryFilterType("FIND_BY_STEM_NAME");
+    }
 
     findStemsRequest.assignStemQueryFilter(queryFilter);
 
@@ -77,7 +90,7 @@ public class GrouperService {
 
     WsResultMeta resultMetadata = results.getResultMetadata();
     if (!"T".equals(resultMetadata.getSuccess())) {
-      throw new RuntimeException("Error finding groups: " + resultMetadata.getSuccess() +
+      throw new RuntimeException("Error finding stems: " + resultMetadata.getSuccess() +
           ", " + resultMetadata.getResultCode() +
           ", " + resultMetadata.getResultMessage());
     }
