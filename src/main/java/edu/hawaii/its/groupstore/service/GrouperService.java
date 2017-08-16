@@ -17,8 +17,8 @@ import edu.internet2.middleware.grouperClient.ws.beans.WsFindStemsResults;
 public class GrouperService {
 
   public enum GroupFilterType {
-    FIND_BY_NAME,
-    FIND_BY_PATH
+    FIND_GROUP_BY_APPROXIMATE_NAME,
+    FIND_GROUPS_IN_PATH
   }
 
   public enum StemFilterType {
@@ -39,14 +39,14 @@ public class GrouperService {
     GcFindGroups findGroupsRequest = new GcFindGroups();
 
     WsQueryFilter queryFilter = new WsQueryFilter();
-    if (filterType == GroupFilterType.FIND_BY_NAME) {
+    if (filterType == GroupFilterType.FIND_GROUP_BY_APPROXIMATE_NAME) {
       // Limit results to groups whose name contains the query passed. Since the "name" field of groups in Grouper
       // contain the path, limit by approximate group name
       queryFilter.setGroupName(query);
       queryFilter.setQueryFilterType("FIND_BY_GROUP_NAME_APPROXIMATE");
       // Limit results to groups found anywhere in the hawaii.edu:store subtree
       queryFilter.setStemName("hawaii.edu:store");
-    } else if (filterType == GroupFilterType.FIND_BY_PATH) {
+    } else if (filterType == GroupFilterType.FIND_GROUPS_IN_PATH) {
       // Limit results to groups found directly in the path specified
       queryFilter.setStemName(query);
       queryFilter.setQueryFilterType("FIND_BY_STEM_NAME");

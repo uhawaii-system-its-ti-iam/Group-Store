@@ -31,7 +31,7 @@ public class StoreRestController {
   @GetMapping(value = "/api/groups/name/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<WsGroup>> groups(@PathVariable String query) {
     logger.info("Entered API to find groups by name...");
-    WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_BY_NAME);
+    WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_GROUP_BY_APPROXIMATE_NAME);
     List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
     return ResponseEntity
         .ok()
@@ -41,7 +41,7 @@ public class StoreRestController {
   @GetMapping(value = "/api/groups/path/{query}/", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<List<WsGroup>> groupsinPath(@PathVariable String query) {
     logger.info("Entered API to find groups in the path specified...");
-    WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_BY_PATH);
+    WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_GROUPS_IN_PATH);
     List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
     return ResponseEntity
         .ok()
