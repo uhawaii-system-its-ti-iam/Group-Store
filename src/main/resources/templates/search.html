@@ -47,12 +47,14 @@
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
             laboris nisi ut aliquip ex ea commodo consequat.
           </p>
-          <nit-advanced-searchbox
-              ng-model="searchParams"
-              parameters="availableSearchParams"
-              placeholder="Search for groups by name"
-              parameterLabel="Available Filters">
-          </nit-advanced-searchbox>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for groups by name..." />
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </span>
+          </div>
           <table class="table table-striped table-hover table-responsive">
             <thead>
             <tr>
