@@ -15,7 +15,6 @@
       $scope.pathHistory = [];
       var url = encodeURI('/store/api/stems/name/hawaii.edu:store/');
       dataProvider.loadData(function(d) {
-        console.log(d);
         $scope.home = d.data[0];
         $scope.home.type = 'stem';
         $scope.goToPath($scope.home);
