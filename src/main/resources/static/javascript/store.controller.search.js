@@ -120,6 +120,21 @@
       return CartService.getGroupsInCart();
     };
 
+    /**
+     * Toggles the icon next to the name of the source in the filters column. Used to expand/collapse the possible
+     * filters.
+     * @param {object} element - the element's whose icon should be toggled
+     */
+    $scope.toggleFilterSourceIcon = function(element) {
+      if ($(element).hasClass('glyphicon-plus')) {
+        $(element).removeClass('glyphicon-plus');
+        $(element).addClass('glyphicon-minus');
+      } else {
+        $(element).removeClass('glyphicon-minus');
+        $(element).addClass('glyphicon-plus');
+      }
+    };
+
   }
   storeApp.controller('StoreControllerV2', StoreController);
 

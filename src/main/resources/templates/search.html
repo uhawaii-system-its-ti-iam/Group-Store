@@ -12,7 +12,11 @@
       <h4>Filters</h4>
       <div class="media" ng-repeat="item in availableFilters">
         <div class="media-left">
-          <i class="glyphicon glyphicon-chevron-right" role="button" data-toggle="collapse" data-target="#collapse{{ $index }}"></i>
+          <i class="glyphicon glyphicon-plus"
+             role="button"
+             data-toggle="collapse"
+             data-target="#collapse{{ $index }}"
+             ng-click="toggleFilterSourceIcon($event.currentTarget)"></i>
         </div>
           <div class="media-body">
             <span>{{ item.name }}</span>
