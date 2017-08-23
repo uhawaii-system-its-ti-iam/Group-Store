@@ -38,10 +38,8 @@
      * Moves the user to the previous path.
      */
     $scope.moveBackOnePath = function() {
-      currentLocation = currentLocation.substr(0, currentLocation.lastIndexOf(':'));
-      $scope.updatePanelText();
-      $scope.itemsInCurrentLocation = [];
-      $scope.loadItemsInLocation(currentLocation);
+      var previousPath = currentLocation.substr(0, currentLocation.lastIndexOf(':'));
+      $scope.goToPath(previousPath);
     };
 
     /**
