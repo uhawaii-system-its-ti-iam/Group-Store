@@ -8,11 +8,14 @@
     $scope.itemsInCurrentLocation;
     $scope.availableFilters;
 
+    $scope.filtersSelected;
+
     /**
      * Initialization of Group Store UI. Moves the user to the home directory.
      */
     $scope.init = function() {
       $scope.pathHistory = [];
+      $scope.filtersSelected = [];
       var url = encodeURI('/store/api/stems/name/hawaii.edu:store/');
       dataProvider.loadData(function(d) {
         $scope.home = d.data[0];
@@ -132,6 +135,20 @@
       } else {
         $(element).removeClass('glyphicon-minus');
         $(element).addClass('glyphicon-plus');
+      }
+    };
+
+    /**
+     * Toggles a filter's checkbox when selected.
+     * @param {object} item - the filter item to toggle
+     */
+    $scope.toggleFilterSelection = function(item) {
+      var index = $scope.filtersSelected.indexOf(item);
+      // Filter is already selected
+      if (index > -1) {
+        $scope.filtersSelected.splice(index, 1);
+      } else {
+        $scope.filtersSelected.push(item);
       }
     };
 
