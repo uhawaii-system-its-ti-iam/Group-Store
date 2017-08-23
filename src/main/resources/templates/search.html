@@ -42,7 +42,7 @@
       <div class="panel panel-default panel-not-rounded">
         <div class="panel-heading">
           <ol class="breadcrumb breadcrumb-header">
-            <li ng-repeat="item in buildBreadcrumb()" ng-class="{ active: $last }">
+            <li ng-repeat="item in buildBreadcrumb() track by $index" ng-class="{ active: $last }">
               <a href="#" ng-if="$first &amp;&amp; !$last" ng-click="moveToBreadcrumbIndex($index)">hawaii.edu :
                 store</a>
               <span href="#" ng-if="$first &amp;&amp; $last">hawaii.edu : store</span>
