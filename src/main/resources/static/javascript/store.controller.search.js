@@ -1,13 +1,15 @@
 (function() {
   function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService) {
 
-    $scope.pathHistory;
-    $scope.home;
+    /** Path the user is currently in */
+    var currentLocation;
 
+    /** Name of the folder the user is currently in */
     $scope.currentLocationName;
+    /** The folders/stems and groups at the user's current location */
     $scope.itemsInCurrentLocation;
-    $scope.availableFilters;
 
+    $scope.availableFilters;
     $scope.filtersSelected;
     $scope.isSearching;
 
@@ -15,59 +17,61 @@
      * Initialization of Group Store UI. Moves the user to the home directory.
      */
     $scope.init = function() {
-      $scope.pathHistory = [];
       $scope.filtersSelected = [];
       $scope.isSearching = false;
-      // Move the user to the home directory
-      var url = encodeURI('/store/api/stems/name/hawaii.edu:store/');
-      dataProvider.loadData(function(d) {
-        $scope.home = d.data[0];
-        $scope.home.type = 'stem';
-        $scope.goToPath($scope.home);
-      }, url);
       $scope.availableFilters = FILTER_OPTIONS;
+      $scope.goToPath('hawaii.edu:store');
     };
 
     /**
-     * Moves the user to the new path specified when clicking on an item in the store. If the user clicks on a group
-     * instead, it will add the group to the cart.
-     * @param {object} location - the location to move to
+     * Moves the user to the path specified.
+     * @param {string} path - the path to move to
      */
-    $scope.goToPath = function(item) {
-      $scope.isSearching = false;
-      if (item.type === 'stem') {
-        $scope.pathHistory.push(item);
-        $scope.updatePanelText();
-        $scope.itemsInCurrentLocation = [];
-        $scope.loadItemsInLocation(item.name);
-      } else if (item.type === 'group') {
-        CartService.addToCart(item);
-      }
+    $scope.goToPath = function(path) {
+      currentLocation = path;
+      $scope.updatePanelText();
+      $scope.itemsInCurrentLocation = [];
+      $scope.loadItemsInLocation(currentLocation);
     };
 
     /**
-     * Moves the user back to the previous folder.
+     * Moves the user to the previous path.
      */
     $scope.moveBackOnePath = function() {
-      $scope.pathHistory.pop();
+      currentLocation = currentLocation.substr(0, currentLocation.lastIndexOf(':'));
       $scope.updatePanelText();
       $scope.itemsInCurrentLocation = [];
-      $scope.loadItemsInLocation($scope.pathHistory[$scope.pathHistory.length - 1].name);
+      $scope.loadItemsInLocation(currentLocation);
     };
 
     /**
-     * Moves the user to the path clicked on the breadcrumb header.
-     * @param {number} index - the index of the breadcrumb clicked on by the user
+     * Builds the breadcrumb navigation.
+     * @example If the user's current path is 'hawaii.edu:store:rcuh:aff', the breadcrumb will be built as
+     * ['hawaii.edu:store', 'rcuh', 'aff'].
+     * @returns {string[]} the current path of the user, separated by the ':' character.
+     */
+    $scope.buildBreadcrumb = function() {
+      var breadcrumb = currentLocation.split(':');
+      // Combines 'hawaii.edu' and 'store' into one breadcrumb navigator
+      breadcrumb.shift();
+      breadcrumb[0] = 'hawaii.edu:store';
+      return breadcrumb;
+    };
+
+    /**
+     * Moves the user to the new path when clicking on a breadcrumb navigator.
+     * @param {number} index - the index of the breadcrumb clicked by the user
      */
     $scope.moveToBreadcrumbIndex = function(index) {
-      $scope.pathHistory = $scope.pathHistory.slice(0, index + 1);
-      $scope.updatePanelText();
-      $scope.itemsInCurrentLocation = [];
-      $scope.loadItemsInLocation($scope.pathHistory[$scope.pathHistory.length - 1].name);
+      var pathArray = currentLocation.split(':');
+      // Accounts for the fact that 'hawaii.edu' and 'store' are combined in the breadcrumb
+      pathArray = pathArray.slice(0, index + 2);
+      var newPath = pathArray.join(':');
+      $scope.goToPath(newPath);
     };
 
     /**
-     * Loads the stems/folders and groups in the user's current location.
+     * Loads the stems/folders and groups in a specific path.
      * @param {string} path - the path to load the items
      */
     $scope.loadItemsInLocation = function(path) {
@@ -96,16 +100,23 @@
      * @returns {boolean} true if the user is at the home directory, otherwise returns false
      */
     $scope.isUserAtHome = function() {
-      return ($scope.pathHistory.length === 1) &&
-          ($scope.pathHistory[$scope.pathHistory.length - 1].name === 'hawaii.edu:store');
+      return currentLocation === 'hawaii.edu:store';
     };
 
     /**
      * Updates the panel title text that tell the user which folder they're in.
      */
     $scope.updatePanelText = function() {
-      $scope.currentLocationName = $scope.pathHistory[$scope.pathHistory.length - 1].extension;
+      $scope.currentLocationName = currentLocation.slice(currentLocation.lastIndexOf(':') + 1, currentLocation.length);
     };
+
+    /**
+     * Adds a group to the user's cart.
+     * @param {object} group - the group to add
+     */
+    $scope.addToCart = function(group) {
+      CartService.addToCart(group);
+    }
 
     /**
      * Removes the specified group from the cart.

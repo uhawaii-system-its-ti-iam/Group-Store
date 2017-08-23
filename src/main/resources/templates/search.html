@@ -42,12 +42,12 @@
       <div class="panel panel-default panel-not-rounded">
         <div class="panel-heading">
           <ol class="breadcrumb breadcrumb-header">
-            <li ng-repeat="item in pathHistory" ng-class="{ active: $last }">
+            <li ng-repeat="item in buildBreadcrumb()" ng-class="{ active: $last }">
               <a href="#" ng-if="$first &amp;&amp; !$last" ng-click="moveToBreadcrumbIndex($index)">hawaii.edu :
                 store</a>
               <span href="#" ng-if="$first &amp;&amp; $last">hawaii.edu : store</span>
-              <a href="#" ng-if="$middle" ng-click="moveToBreadcrumbIndex($index)">{{ item.extension }}</a>
-              <span ng-if="!$first &amp;&amp; $last">{{ item.extension }}</span>
+              <a href="#" ng-if="$middle" ng-click="moveToBreadcrumbIndex($index)">{{ item }}</a>
+              <span ng-if="!$first &amp;&amp; $last">{{ item }}</span>
             </li>
           </ol>
         </div>
@@ -81,9 +81,13 @@
               </td>
             </tr>
             <tr ng-repeat="item in itemsInCurrentLocation | orderBy: '-type'">
-              <td>
-                <i class="fa" ng-class="item.type === 'stem' ? 'fa-folder' : 'fa-group'"></i>
-                <a href="#" ng-click="goToPath(item)">{{ item.extension }}</a>
+              <td ng-if="item.type === 'stem'">
+                <i class="fa fa-folder"></i>
+                <a href="#" ng-click="goToPath(item.name)">{{ item.extension }}</a>
+              </td>
+              <td ng-if="item.type === 'group'">
+                <i class="fa fa-group"></i>
+                <a href="#" ng-click="addToCart(item)">{{ item.extension }}</a>
               </td>
             </tr>
             </tbody>
