@@ -34,7 +34,7 @@
       <br />
       <span class="pull-right">
         <button class="btn btn-default btn-sm">Clear Filters</button>
-        <button class="btn btn-primary btn-sm">Apply Filters</button>
+        <button class="btn btn-primary btn-sm" ng-click="applyFilters()">Apply Filters</button>
       </span>
     </div>
     <div class="col-md-6">
@@ -70,9 +70,10 @@
             <thead>
             <tr>
               <th>Name</th>
+              <th ng-if="isSearching">Path</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody ng-if="!isSearching">
             <tr ng-if="!isUserAtHome()">
               <td>
                 <i class="fa fa-chevron-up"></i>
@@ -84,7 +85,17 @@
                 <i class="fa" ng-class="item.type === 'stem' ? 'fa-folder' : 'fa-group'"></i>
                 <a href="#" ng-click="goToPath(item)">{{ item.extension }}</a>
               </td>
-              <td>{{ item.description }}</td>
+            </tr>
+            </tbody>
+            <tbody ng-if="isSearching">
+            <tr ng-repeat="item in itemsInCurrentLocation">
+              <td>
+                <i class="fa" ng-class="item.type === 'stem' ? 'fa-folder' : 'fa-group'"></i>
+                <a href="#" ng-click="goToPath(item)">{{ item.extension }}</a>
+              </td>
+              <td>
+                {{ item.name }}
+              </td>
             </tr>
             </tbody>
           </table>

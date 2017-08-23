@@ -9,6 +9,7 @@
     $scope.availableFilters;
 
     $scope.filtersSelected;
+    $scope.isSearching;
 
     /**
      * Initialization of Group Store UI. Moves the user to the home directory.
@@ -16,6 +17,8 @@
     $scope.init = function() {
       $scope.pathHistory = [];
       $scope.filtersSelected = [];
+      $scope.isSearching = false;
+      // Move the user to the home directory
       var url = encodeURI('/store/api/stems/name/hawaii.edu:store/');
       dataProvider.loadData(function(d) {
         $scope.home = d.data[0];
@@ -30,13 +33,15 @@
      * instead, it will add the group to the cart.
      * @param {object} location - the location to move to
      */
-    $scope.goToPath = function(path) {
-      if (path.type === 'stem') {
-        $scope.pathHistory.push(path);
+    $scope.goToPath = function(item) {
+      $scope.isSearching = false;
+      if (item.type === 'stem') {
+        $scope.pathHistory.push(item);
         $scope.updatePanelText();
-        $scope.loadItemsInCurrentLocation();
-      } else if (path.type === 'group') {
-        CartService.addToCart(path);
+        $scope.itemsInCurrentLocation = [];
+        $scope.loadItemsInLocation(item.name);
+      } else if (item.type === 'group') {
+        CartService.addToCart(item);
       }
     };
 
@@ -46,7 +51,8 @@
     $scope.moveBackOnePath = function() {
       $scope.pathHistory.pop();
       $scope.updatePanelText();
-      $scope.loadItemsInCurrentLocation();
+      $scope.itemsInCurrentLocation = [];
+      $scope.loadItemsInLocation($scope.pathHistory[$scope.pathHistory.length - 1].name);
     };
 
     /**
@@ -56,16 +62,16 @@
     $scope.moveToBreadcrumbIndex = function(index) {
       $scope.pathHistory = $scope.pathHistory.slice(0, index + 1);
       $scope.updatePanelText();
-      $scope.loadItemsInCurrentLocation();
+      $scope.itemsInCurrentLocation = [];
+      $scope.loadItemsInLocation($scope.pathHistory[$scope.pathHistory.length - 1].name);
     };
 
     /**
      * Loads the stems/folders and groups in the user's current location.
+     * @param {string} path - the path to load the items
      */
-    $scope.loadItemsInCurrentLocation = function() {
-      $scope.itemsInCurrentLocation = [];
-      var currentLocation = $scope.pathHistory[$scope.pathHistory.length - 1].name;
-      var stemsUrl = encodeURI('/store/api/stems/children/' + currentLocation + '/')
+    $scope.loadItemsInLocation = function(path) {
+      var stemsUrl = encodeURI('/store/api/stems/children/' + path + '/')
       // Load stems/folders
       dataProvider.loadData(function(d) {
         var data = d.data;
@@ -75,7 +81,7 @@
         });
       }, stemsUrl);
       // Load groups
-      var groupsUrl = encodeURI('/store/api/groups/path/' + currentLocation + '/');
+      var groupsUrl = encodeURI('/store/api/groups/path/' + path + '/');
       dataProvider.loadData(function(d) {
         var data = d.data;
         data.forEach(function(item) {
@@ -150,6 +156,14 @@
       } else {
         $scope.filtersSelected.push(item);
       }
+    };
+
+    $scope.applyFilters = function() {
+      $scope.isSearching = true;
+      $scope.itemsInCurrentLocation = [];
+      $scope.filtersSelected.forEach(function(filter) {
+        $scope.loadItemsInLocation(filter.path);
+      });
     };
 
   }
