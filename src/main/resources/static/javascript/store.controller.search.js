@@ -178,6 +178,6 @@
     };
 
   }
-  storeApp.controller('StoreControllerV2', StoreController);
+  storeApp.controller('StoreController', StoreController);
 
 })();
