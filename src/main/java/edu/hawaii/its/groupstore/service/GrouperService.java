@@ -16,18 +16,41 @@ import edu.internet2.middleware.grouperClient.ws.beans.WsFindStemsResults;
 @Service
 public class GrouperService {
 
+  public enum GroupFilterType {
+    FIND_GROUP_BY_APPROXIMATE_NAME,
+    FIND_GROUPS_IN_PATH
+  }
+
+  public enum StemFilterType {
+    FIND_CHILDREN_OF_STEM,
+    FIND_STEM_BY_EXACT_NAME
+  }
+
+
   /**
-   * Finds groups that match the given query.
+   * Find groups that match the given query.
    * @param query the group name to search for
-   * @return an array of groups that closely match the query passed
+   * @param filterType the method in which groups will be filtered. FIND_BY_NAME will filter for groups whose name
+   *                   contains the query passed. FIND_BY_PATH will filter for groups found directly in the query/path
+   *                   passed
+   * @return an array of groups
    */
-  public WsGroup[] findGroups(String query) {
+  public WsGroup[] findGroups(String query, GroupFilterType filterType) {
     GcFindGroups findGroupsRequest = new GcFindGroups();
 
     WsQueryFilter queryFilter = new WsQueryFilter();
-    queryFilter.setGroupName(query);
-    queryFilter.setQueryFilterType("FIND_BY_GROUP_NAME_APPROXIMATE");
-    queryFilter.setStemName("hawaii.edu:store");
+    if (filterType == GroupFilterType.FIND_GROUP_BY_APPROXIMATE_NAME) {
+      // Limit results to groups whose name contains the query passed. Since the "name" field of groups in Grouper
+      // contain the path, limit by approximate group name
+      queryFilter.setGroupName(query);
+      queryFilter.setQueryFilterType("FIND_BY_GROUP_NAME_APPROXIMATE");
+      // Limit results to groups found anywhere in the hawaii.edu:store subtree
+      queryFilter.setStemName("hawaii.edu:store");
+    } else if (filterType == GroupFilterType.FIND_GROUPS_IN_PATH) {
+      // Limit results to groups found directly in the path specified
+      queryFilter.setStemName(query);
+      queryFilter.setQueryFilterType("FIND_BY_STEM_NAME");
+    }
 
     findGroupsRequest.assignQueryFilter(queryFilter);
 
@@ -45,14 +68,21 @@ public class GrouperService {
   /**
    * Finds stems/folders located in the path given.
    * @param query the path to look at
+   * @param filterType the method in which stems will be filtered. FIND_CHILDREN_OF_STEM will find folders/stems located
+   *                   in the query passed. FIND_STEM_BY_EXACT_NAME will find the stem/folder matching the query exactly
    * @return an array of stems/folders located in the path passed
    */
-  public WsStem[] findStems(String query) {
+  public WsStem[] findStems(String query, StemFilterType filterType) {
     GcFindStems findStemsRequest = new GcFindStems();
 
     WsStemQueryFilter queryFilter = new WsStemQueryFilter();
-    queryFilter.setParentStemName(query);
-    queryFilter.setStemQueryFilterType("FIND_BY_PARENT_STEM_NAME");
+    if (filterType == StemFilterType.FIND_CHILDREN_OF_STEM) {
+      queryFilter.setParentStemName(query);
+      queryFilter.setStemQueryFilterType("FIND_BY_PARENT_STEM_NAME");
+    } else if (filterType == StemFilterType.FIND_STEM_BY_EXACT_NAME) {
+      queryFilter.setStemName(query);
+      queryFilter.setStemQueryFilterType("FIND_BY_STEM_NAME");
+    }
 
     findStemsRequest.assignStemQueryFilter(queryFilter);
 
@@ -60,7 +90,7 @@ public class GrouperService {
 
     WsResultMeta resultMetadata = results.getResultMetadata();
     if (!"T".equals(resultMetadata.getSuccess())) {
-      throw new RuntimeException("Error finding groups: " + resultMetadata.getSuccess() +
+      throw new RuntimeException("Error finding stems: " + resultMetadata.getSuccess() +
           ", " + resultMetadata.getResultCode() +
           ", " + resultMetadata.getResultMessage());
     }
