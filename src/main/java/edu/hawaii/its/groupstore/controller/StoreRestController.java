@@ -32,7 +32,14 @@ public class StoreRestController {
   public ResponseEntity<List<WsGroup>> groups(@PathVariable String query) {
     logger.info("Entered API to find groups by name...");
     WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_GROUP_BY_APPROXIMATE_NAME);
-    List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
+    List<WsGroup> data;
+    // Results from finding groups from Grouper can be null if no groups are found in the directory. If there are
+    // results, return the results, otherwise returns a blank JSON object.
+    if (groupResults != null) {
+      data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
+    } else {
+      data = new ArrayList<WsGroup>();
+    }
     return ResponseEntity
         .ok()
         .body(data);
@@ -42,7 +49,12 @@ public class StoreRestController {
   public ResponseEntity<List<WsGroup>> groupsinPath(@PathVariable String query) {
     logger.info("Entered API to find groups in the path specified...");
     WsGroup[] groupResults = grouperService.findGroups(query, GroupFilterType.FIND_GROUPS_IN_PATH);
-    List<WsGroup> data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
+    List<WsGroup> data;
+    if (groupResults != null) {
+      data = new ArrayList<WsGroup>(Arrays.asList(groupResults));
+    } else {
+      data = new ArrayList<WsGroup>();
+    }
     return ResponseEntity
         .ok()
         .body(data);
@@ -52,7 +64,12 @@ public class StoreRestController {
   public ResponseEntity<List<WsStem>> stems(@PathVariable String query) {
     logger.info("Entered API to find children of a stem...");
     WsStem[] stemResults = grouperService.findStems(query, StemFilterType.FIND_CHILDREN_OF_STEM);
-    List<WsStem> data = new ArrayList<WsStem>(Arrays.asList(stemResults));
+    List<WsStem> data;
+    if (stemResults != null) {
+      data = new ArrayList<WsStem>(Arrays.asList(stemResults));
+    } else {
+      data = new ArrayList<WsStem>();
+    }
     return ResponseEntity
         .ok()
         .body(data);
@@ -62,11 +79,15 @@ public class StoreRestController {
   public ResponseEntity<List<WsStem>> stemByName(@PathVariable String query) {
     logger.info("Entered API to find matching stem...");
     WsStem[] stemResults = grouperService.findStems(query, StemFilterType.FIND_STEM_BY_EXACT_NAME);
-    List<WsStem> data = new ArrayList<WsStem>(Arrays.asList(stemResults));
+    List<WsStem> data;
+    if (stemResults != null) {
+      data = new ArrayList<WsStem>(Arrays.asList(stemResults));
+    } else {
+      data = new ArrayList<WsStem>();
+    }
     return ResponseEntity
         .ok()
         .body(data);
-
   }
 
 }
