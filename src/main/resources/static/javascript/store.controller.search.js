@@ -179,6 +179,13 @@
     };
 
     /**
+     * Clears the filters selected by the user.
+     */
+    $scope.clearFilters = function() {
+      $scope.filtersSelected = [];
+    };
+
+    /**
      * Searches for groups matching the query entered by the user in the search bar, then loads them for display onto
      * the table.
      */
