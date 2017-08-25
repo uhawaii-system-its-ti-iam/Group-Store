@@ -13,6 +13,9 @@
     $scope.filtersSelected;
     $scope.isSearching;
 
+    /** User's input into the search bar when searching for groups */
+    $scope.searchQuery;
+
     /**
      * Initialization of Group Store UI. Moves the user to the home directory.
      */
@@ -173,6 +176,28 @@
       $scope.filtersSelected.forEach(function(filter) {
         $scope.loadItemsInLocation(filter.path);
       });
+    };
+
+    /**
+     * Searches for groups matching the query entered by the user in the search bar, then loads them for display onto
+     * the table.
+     */
+    $scope.searchForGroups = function() {
+      // Only executes a search for groups when the user enters a query
+      if (!!$scope.searchQuery) {
+        // Shows the path column to allow users to know what path the group was found in
+        $scope.isSearching = true;
+        // Loads the groups founds and displays them in the table
+        $scope.itemsInCurrentLocation = [];
+        var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
+        dataProvider.loadData(function(d) {
+          var data = d.data;
+          data.forEach(function(item) {
+            item.type = 'group';
+            $scope.itemsInCurrentLocation.push(item);
+          });
+        }, groupsUrl);
+      }
     };
 
   }
