@@ -24,7 +24,7 @@
               <div class="checkbox" ng-repeat="child in item.children">
                 <label>
                   <input type="checkbox"
-                         ng-checked="filtersSelected.indexOf(child) > 1"
+                         ng-checked="filtersSelected.indexOf(child) > -1"
                          ng-click="toggleFilterSelection(child)" /> {{ child.name }}
                 </label>
               </div>
@@ -33,7 +33,7 @@
       </div>
       <br />
       <span class="pull-right">
-        <button class="btn btn-default btn-sm">Clear Filters</button>
+        <button class="btn btn-default btn-sm" ng-click="clearFilters()">Clear Filters</button>
         <button class="btn btn-primary btn-sm" ng-click="applyFilters()">Apply Filters</button>
       </span>
     </div>

@@ -170,12 +170,25 @@
       }
     };
 
+    /**
+     * Applies the filters selected by the user.
+     */
     $scope.applyFilters = function() {
-      $scope.isSearching = true;
-      $scope.itemsInCurrentLocation = [];
-      $scope.filtersSelected.forEach(function(filter) {
-        $scope.loadItemsInLocation(filter.path);
-      });
+      // Prevent the user from applying filters if no filters were selected
+      if ($scope.filtersSelected.length > 0) {
+        $scope.isSearching = true;
+        $scope.itemsInCurrentLocation = [];
+        $scope.filtersSelected.forEach(function(filter) {
+          $scope.loadItemsInLocation(filter.path);
+        });
+      }
+    };
+
+    /**
+     * Clears the filters selected by the user.
+     */
+    $scope.clearFilters = function() {
+      $scope.filtersSelected = [];
     };
 
     /**
