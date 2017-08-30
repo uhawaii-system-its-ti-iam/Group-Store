@@ -6,7 +6,7 @@
 <nav th:replace="menubar :: copy"></nav>
 
 <!-- Content container -->
-<div ng-controller="StoreController" data-ng-init="init()">
+<div ng-controller="StoreController" data-ng-init="init()" >
   <div class="container">
     <div class="col-md-3">
       <h4>Filters</h4>
@@ -137,7 +137,10 @@
             </div>
           </div>
         </div>
-        <div class="panel-footer clearfix" ng-if="getAmountInCart() > 0">
+
+
+
+        <div class="panel-footer clearfix" ng-if="getAmountInCart() > 1">
           <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#myModal">
             Relationship Mapping
           </button>
@@ -154,36 +157,72 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-sm-6">
-                  <div id="venn">
-                    <div id="c1" class="circle">
-                      <p>Group A</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans1"></div>
-                    </div>
-                    <div id="c2" class="circle">
-                      <p>Group B</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans2"></div>
-                    </div>
-                    <div id="c3" class="circle">
-                      <p>Group C</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans3"></div>
-                    </div>
-                    <div id="j12" class="joined">
-                      <p>Both</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="both"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5 pull-right">
                   <div class="list-group" ng-if="getAmountInCart() > 0">
+                    <h4 class="modal-title">Cart</h4>
                     <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
                       <div class="media-body" data-toggle="tooltip">
                         <strong>Group:</strong> {{ group.name }}
                       </div>
                     </div>
+                    <br/><br/>
+
+                    <h4 class="modal-title">Options</h4>
+
+                    <div class="2groups" ng-if="getAmountInCart() == 2">
+
+                      <form name="builder">
+                        <input type="radio" name="field" value="one" onclick='check_value(1)'/> A - B<br />
+                        <input type="radio" name="field" value="two" onclick='check_value(2)'/> B - A<br />
+                        <input type="radio" name="field" value="three" onclick='check_value(3)'/> AB<br />
+                      </form>
+                    </div>
+
+                    <div class="3groups" ng-if="getAmountInCart() == 3">
+
+                      <form name="builder">
+                        <input type="radio" name="field" value="one" onclick='check_value(4)'/> A - B - C<br />
+                        <input type="radio" name="field" value="two" onclick='check_value(5)'/> A - B<br />
+                        <input type="radio" name="field" value="three" onclick='check_value(6)'/> A - C<br />
+
+                        <input type="radio" name="field" value="one" onclick='check_value(7)'/> B - A - C<br />
+                        <input type="radio" name="field" value="two" onclick='check_value(8)'/> B - A<br />
+                        <input type="radio" name="field" value="three" onclick='check_value(9)'/> B - C<br />
+
+                        <input type="radio" name="field" value="one" onclick='check_value(10)'/> C - A - B<br />
+                        <input type="radio" name="field" value="two" onclick='check_value(11)'/> C - A<br />
+                        <input type="radio" name="field" value="three" onclick='check_value(12)'/> C - B<br />
+
+                        <input type="radio" name="field" value="one" onclick='check_value(13)'/> AB<br />
+                        <input type="radio" name="field" value="two" onclick='check_value(14)'/> BC<br />
+                        <input type="radio" name="field" value="three" onclick='check_value(15)'/> CA<br />
+                        <input type="radio" name="field" value="three" onclick='check_value(16)'/> ABC<br />
+
+                      </form>
+
+                    </div>
+
+                    <div class="group-limit" ng-if="getAmountInCart() > 4">
+                      <h3>*** Relationship Mapping Unavailable ***</h3>
+                    </div>
+
+
                   </div>
                 </div>
+                <div class="col-sm-5" style="margin-left: 80px; margin-top: 50px;">
+                <div id="imagedest">
+                  <div class="2groups" ng-if="getAmountInCart() == 2">
+                  <img th:src="@{/images/2.png}" src="images/2.png" alt="" height="300px" weight="450px"/>
+                  </div>
+
+                  <div class="3groups" ng-if="getAmountInCart() == 3">
+                    <img th:src="@{/images/3.png}" src="images/3.png" alt="" height="400px" weight="400px"/>
+                  </div>
+                </div>
+
+                </div>
               </div>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
