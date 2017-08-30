@@ -32,6 +32,8 @@
      */
     $scope.goToPath = function(path) {
       currentLocation = path;
+      // If the user is moving to a folder after executing applying a filter, this will remove the 'Path' column
+      $scope.isSearching = false;
       $scope.updatePanelText();
       $scope.itemsInCurrentLocation = [];
       $scope.loadItemsInLocation(currentLocation);
