@@ -128,7 +128,7 @@
         <div class="list-group" ng-if="getAmountInCart() > 0">
           <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
             <div class="media-body" style="font-size: 12.5px;">
-              {{ group.extension }}
+              <span data-toggle="tooltip" data-placement="left" title="{{ group.name }}">{{ group.extension }}</span>
             </div>
             <div class="media-right media-middle">
               <button class="btn btn-xs btn-danger" ng-click="removeFromCart(group)">
