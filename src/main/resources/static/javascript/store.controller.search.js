@@ -1,16 +1,19 @@
 (function() {
   function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService) {
 
-    /** Path the user is currently in */
+    /** User's current path/location */
     var currentLocation;
 
     /** Name of the folder the user is currently in */
     $scope.currentLocationName;
-    /** The folders/stems and groups at the user's current location */
+    /** The folders/stems and groups at the user's current location, either while browsing or filtering/searching */
     $scope.itemsInCurrentLocation;
 
+    /** The filters available for use by the user on the left side of the page */
     $scope.availableFilters;
+    /** The filters selected by the user */
     $scope.filtersSelected;
+    /** Mode to tell whether a user is browsing through the store, or just applied filters/using the search bar */
     $scope.isSearching;
 
     /** User's input into the search bar when searching for groups */
@@ -35,14 +38,16 @@
       // If the user is moving to a folder after executing applying a filter, this will remove the 'Path' column
       $scope.isSearching = false;
       $scope.updatePanelText();
+      // Loads all the stems/folders and groups at the user's current location
       $scope.itemsInCurrentLocation = [];
       $scope.loadItemsInLocation(currentLocation);
     };
 
     /**
-     * Moves the user to the previous path.
+     * Moves the user back one folder.
      */
     $scope.moveBackOnePath = function() {
+      // Previous path is defined as everything before the last ':'
       var previousPath = currentLocation.substr(0, currentLocation.lastIndexOf(':'));
       $scope.goToPath(previousPath);
     };
@@ -67,7 +72,8 @@
      */
     $scope.moveToBreadcrumbIndex = function(index) {
       var pathArray = currentLocation.split(':');
-      // Accounts for the fact that 'hawaii.edu' and 'store' are combined in the breadcrumb
+      // To include the folder the user clicked on, and to account for 'hawaii.edu' and 'store' being combined in the
+      // breadcrumb as index 0, add 2 to the index clicked on to extract the new path
       pathArray = pathArray.slice(0, index + 2);
       var newPath = pathArray.join(':');
       $scope.goToPath(newPath);
@@ -78,20 +84,22 @@
      * @param {string} path - the path to load the items
      */
     $scope.loadItemsInLocation = function(path) {
-      var stemsUrl = encodeURI('/store/api/stems/children/' + path + '/')
+      var stemsUrl = encodeURI('/store/api/stems/children/' + path + '/');
+      var groupsUrl = encodeURI('/store/api/groups/path/' + path + '/');
       // Load stems/folders
       dataProvider.loadData(function(d) {
         var data = d.data;
         data.forEach(function (item) {
+          // Attach a 'type' property with the value of 'stem' to differentiate these with groups
           item.type = 'stem';
           $scope.itemsInCurrentLocation.push(item);
         });
       }, stemsUrl);
       // Load groups
-      var groupsUrl = encodeURI('/store/api/groups/path/' + path + '/');
       dataProvider.loadData(function(d) {
         var data = d.data;
         data.forEach(function(item) {
+          // Attach a 'type' property with the value of 'group' to differentiate these with stems/folders
           item.type = 'group';
           $scope.itemsInCurrentLocation.push(item);
         });
@@ -107,9 +115,10 @@
     };
 
     /**
-     * Updates the panel title text that tell the user which folder they're in.
+     * Updates the panel title text that tells the user which folder they're in.
      */
     $scope.updatePanelText = function() {
+      // The folder name is defined as everything after the last ':' delimiter
       $scope.currentLocationName = currentLocation.slice(currentLocation.lastIndexOf(':') + 1, currentLocation.length);
     };
 
@@ -164,10 +173,11 @@
      */
     $scope.toggleFilterSelection = function(item) {
       var index = $scope.filtersSelected.indexOf(item);
-      // Filter is already selected
+      // Filter is already selected, so have it uncheck its box
       if (index > -1) {
         $scope.filtersSelected.splice(index, 1);
       } else {
+        // Not selected, so check the box
         $scope.filtersSelected.push(item);
       }
     };
@@ -178,7 +188,9 @@
     $scope.applyFilters = function() {
       // Prevent the user from applying filters if no filters were selected
       if ($scope.filtersSelected.length > 0) {
+        // Adds the 'Path' column to show users the location of the items
         $scope.isSearching = true;
+        // Loads the items that correspond to the selected filters
         $scope.itemsInCurrentLocation = [];
         $scope.filtersSelected.forEach(function(filter) {
           $scope.loadItemsInLocation(filter.path);
@@ -198,11 +210,11 @@
      * the table.
      */
     $scope.searchForGroups = function() {
-      // Only executes a search for groups when the user enters a query
+      // Only executes a search for groups if the user entered a query
       if (!!$scope.searchQuery) {
         // Shows the path column to allow users to know what path the group was found in
         $scope.isSearching = true;
-        // Loads the groups founds and displays them in the table
+        // Loads the groups found and displays them in the table
         $scope.itemsInCurrentLocation = [];
         var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
         dataProvider.loadData(function(d) {
