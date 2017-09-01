@@ -127,7 +127,10 @@
     <div class="col-lg-3">
       <div class="panel panel-default panel-not-rounded">
         <div class="panel-heading">
-          <h3 class="panel-title">Cart</h3>
+          <h3 class="panel-title">
+            Cart
+            <span ng-if="getAmountInCart() > 0">({{ getAmountInCart() }})</span>
+          </h3>
         </div>
         <div class="panel-body" ng-if="getAmountInCart() === 0">
           Your cart is currently empty
