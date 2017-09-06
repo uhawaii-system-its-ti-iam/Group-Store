@@ -247,6 +247,14 @@
       }
     };
 
+    /**
+     * Allows the users to re-browse through the store. It will load the items at the user's location prior to
+     * searching/applying filters.
+     */
+    $scope.reset = function() {
+      $scope.goToPath(currentLocation);
+    };
+
   }
   storeApp.controller('StoreController', StoreController);
 

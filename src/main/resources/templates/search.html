@@ -53,7 +53,11 @@
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button">
                   <i class="glyphicon glyphicon-search"></i>
-               </button>
+                </button>
+                <!-- Reset button to allow users to re-browse the store after searching or applying a filter -->
+                <button class="btn btn-default" type="button" ng-click="reset()">
+                  <i class="glyphicon glyphicon-refresh"></i>
+                </button>
               </span>
             </div>
           </form>
