@@ -31,11 +31,25 @@
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
             laboris nisi ut aliquip ex ea commodo consequat.
           </p>
+          <!-- Alert if not enough characters entered -->
+          <div ng-if="errorMessages.notEnoughCharacters" class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" aria-label="Close" ng-click="errorMessages.notEnoughCharacters = false">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            Please enter a group name that is 3 characters or more.
+          </div>
+          <!-- Alert if no results found -->
+          <div ng-if="errorMessages.noResultsFound" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" aria-label="Close" ng-click="errorMessages.noResultsFound = false">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            No groups were found that match "{{ queryEntered }}".
+          </div>
           <!-- Search bar for finding groups -->
           <form ng-submit="searchForGroups()">
             <div class="input-group">
               <input type="text" ng-model="searchQuery" class="form-control"
-                     placeholder="Search for groups by name..." />
+                     placeholder="Search for groups by name (3 characters min)" />
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button">
                   <i class="glyphicon glyphicon-search"></i>

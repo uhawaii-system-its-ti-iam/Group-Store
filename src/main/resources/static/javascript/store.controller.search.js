@@ -18,6 +18,14 @@
 
     /** User's input into the search bar when searching for groups */
     $scope.searchQuery;
+    /** User's query when clicking on the search icon */
+    $scope.queryEntered;
+
+    /** Used for displaying alerts for various errors */
+    $scope.errorMessages = [
+      { notEnoughCharacters: false },
+      { noResultsFound: false }
+    ];
 
     /**
      * Initialization of Group Store UI. Moves the user to the home directory.
@@ -210,19 +218,31 @@
      * the table.
      */
     $scope.searchForGroups = function() {
-      // Only executes a search for groups if the user entered a query
-      if (!!$scope.searchQuery) {
-        // Shows the path column to allow users to know what path the group was found in
-        $scope.isSearching = true;
-        // Loads the groups found and displays them in the table
-        $scope.itemsInCurrentLocation = [];
+      // Display an alert if user enters a query that is less than 3 characters
+      if ($scope.searchQuery.length < 3) {
+        $scope.errorMessages.notEnoughCharacters = true;
+      } else {
+        // Store the query entered in case no results are found
+        $scope.queryEntered = $scope.searchQuery;
+        // Hide all alerts related to searching
+        $scope.errorMessages.noResultsFound = false;
+        $scope.errorMessages.notEnoughCharacters = false;
         var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
-        dataProvider.loadData(function(d) {
+        dataProvider.loadData(function (d) {
           var data = d.data;
-          data.forEach(function(item) {
-            item.type = 'group';
-            $scope.itemsInCurrentLocation.push(item);
-          });
+          // Results were found, so load them onto the table and display it
+          if (data.length > 0) {
+            $scope.itemsInCurrentLocation = [];
+            data.forEach(function (item) {
+              item.type = 'group';
+              $scope.itemsInCurrentLocation.push(item);
+            });
+            // Shows the path column to allow users to know what path the group was found in
+            $scope.isSearching = true;
+          } else {
+            // Otherwise display an alert saying no results were found
+            $scope.errorMessages.noResultsFound = true;
+          }
         }, groupsUrl);
       }
     };
