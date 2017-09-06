@@ -219,7 +219,7 @@
      */
     $scope.searchForGroups = function() {
       // Display an alert if user enters a query that is less than 3 characters
-      if ($scope.searchQuery.length < 3) {
+      if (!$scope.searchQuery || $scope.searchQuery.length < 3) {
         $scope.errorMessages.notEnoughCharacters = true;
       } else {
         // Store the query entered in case no results are found
