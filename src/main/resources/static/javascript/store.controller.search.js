@@ -31,6 +31,8 @@
      * Initialization of Group Store UI. Moves the user to the home directory.
      */
     $scope.init = function() {
+      // Loads groups in the cart from the user's previous session (if any)
+      CartService.loadCart();
       $scope.filtersSelected = [];
       $scope.isSearching = false;
       $scope.availableFilters = FILTER_OPTIONS;
