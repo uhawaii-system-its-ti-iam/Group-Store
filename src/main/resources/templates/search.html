@@ -25,21 +25,39 @@
           <!-- End of breadcrumb heading -->
         </div>
         <div class="panel-body">
-          <h1 style="margin-top: -5px;">{{ currentLocationName }}</h1>
+          <h1 style="margin-top: -5px;">{{ currentFolder }}</h1>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
             laboris nisi ut aliquip ex ea commodo consequat.
           </p>
+          <!-- Alert if not enough characters entered -->
+          <div ng-if="errorMessages.notEnoughCharacters" class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" aria-label="Close" ng-click="errorMessages.notEnoughCharacters = false">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            Please enter a group name that is 3 characters or more.
+          </div>
+          <!-- Alert if no results found -->
+          <div ng-if="errorMessages.noResultsFound" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" aria-label="Close" ng-click="errorMessages.noResultsFound = false">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            No groups were found that match "{{ queryEntered }}".
+          </div>
           <!-- Search bar for finding groups -->
           <form ng-submit="searchForGroups()">
             <div class="input-group">
               <input type="text" ng-model="searchQuery" class="form-control"
-                     placeholder="Search for groups by name..." />
+                     placeholder="Search for groups by name (3 characters min)" />
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button">
                   <i class="glyphicon glyphicon-search"></i>
-               </button>
+                </button>
+                <!-- Reset button to allow users to re-browse the store after searching or applying a filter -->
+                <button class="btn btn-default" type="button" ng-click="reset()">
+                  <i class="glyphicon glyphicon-refresh"></i>
+                </button>
               </span>
             </div>
           </form>
@@ -48,22 +66,22 @@
             <thead>
             <tr>
               <th>Name</th>
-              <th ng-if="isSearching">Path</th>
+              <th ng-if="!isBrowsing">Path</th>
             </tr>
             </thead>
             <!-- Table body when navigating throughout the store -->
-            <tbody ng-if="!isSearching">
+            <tbody ng-if="isBrowsing">
             <tr ng-if="!isUserAtHome()">
               <td>
                 <i class="fa fa-chevron-up"></i>
-                <a href="#" ng-click="moveBackOnePath()">Go back to the previous folder</a>
+                <a href="#" ng-click="moveBackOneFolder()">Go back to the previous folder</a>
               </td>
             </tr>
             <!-- Sort the items such that folders appear first, then groups -->
             <tr ng-repeat="item in itemsInCurrentLocation | orderBy: '-type'">
               <td ng-if="item.type === 'stem'">
                 <i class="fa fa-folder"></i>
-                <a href="#" ng-click="goToPath(item.name)">{{ item.extension }}</a>
+                <a href="#" ng-click="goToLocation(item.name)">{{ item.extension }}</a>
               </td>
               <td ng-if="item.type === 'group'">
                 <i class="fa fa-group"></i>
@@ -72,11 +90,11 @@
             </tr>
             </tbody>
             <!-- Table body after applying filters, or searching for groups using search bar -->
-            <tbody ng-if="isSearching">
+            <tbody ng-if="!isBrowsing">
             <tr ng-repeat="item in itemsInCurrentLocation">
               <td ng-if="item.type === 'stem'">
                 <i class="fa fa-folder"></i>
-                <a href="#" ng-click="goToPath(item.name)">{{ item.extension }}</a>
+                <a href="#" ng-click="goToLocation(item.name)">{{ item.extension }}</a>
               </td>
               <td ng-if="item.type === 'group'">
                 <i class="fa fa-group"></i>

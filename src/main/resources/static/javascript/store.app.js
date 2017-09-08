@@ -1,2 +1,2 @@
 'use strict';
-var storeApp = angular.module('storeApp', []);
+var storeApp = angular.module('storeApp', ['ngStorage']);
