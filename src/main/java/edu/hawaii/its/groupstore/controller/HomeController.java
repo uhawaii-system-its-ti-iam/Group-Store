@@ -95,11 +95,4 @@ public class HomeController {
         return "search";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/cart")
-    public String cart() {
-        logger.debug("User at cart page.");
-        return "cart";
-    }
-
 }
