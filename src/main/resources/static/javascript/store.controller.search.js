@@ -1,24 +1,25 @@
 (function() {
   function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService) {
 
-    /** User's current path/location */
+    /** User's current location */
     var currentLocation;
 
     /** Name of the folder the user is currently in */
-    $scope.currentLocationName;
-    /** The folders/stems and groups at the user's current location, either while browsing or filtering/searching */
+    $scope.currentFolder;
+    /** The folders and groups that are displayed on the table */
     $scope.itemsInCurrentLocation;
 
     /** The filters available for use by the user on the left side of the page */
     $scope.availableFilters;
     /** The filters selected by the user */
     $scope.filtersSelected;
-    /** Mode to tell whether a user is browsing through the store, or just applied filters/using the search bar */
-    $scope.isSearching;
+
+    /** Whether the user is browsing through the store, or is using the search bar/filters */
+    $scope.isBrowsing;
 
     /** User's input into the search bar when searching for groups */
     $scope.searchQuery;
-    /** User's query when clicking on the search icon */
+    /** User's query when executing a search */
     $scope.queryEntered;
 
     /** Used for displaying alerts for various errors */
@@ -31,24 +32,24 @@
      * Initialization of Group Store UI. Moves the user to the home directory.
      */
     $scope.init = function() {
-      // Loads groups in the cart from the user's previous session (if any)
+      // Load the groups in the cart from a previous session (if any)
       CartService.loadCart();
-      $scope.filtersSelected = [];
-      $scope.isSearching = false;
       $scope.availableFilters = FILTER_OPTIONS;
-      $scope.goToPath('hawaii.edu:store');
+      $scope.filtersSelected = [];
+      $scope.isBrowsing = true;
+      // Move the user to the Group Store home directory
+      $scope.goToLocation('hawaii.edu:store');
     };
 
     /**
-     * Moves the user to the path specified.
-     * @param {string} path - the path to move to
+     * Moves the user to the new location specified.
+     * @param {string} location - the path to move to
      */
-    $scope.goToPath = function(path) {
-      currentLocation = path;
-      // If the user is moving to a folder after executing applying a filter, this will remove the 'Path' column
-      $scope.isSearching = false;
-      $scope.updatePanelText();
-      // Loads all the stems/folders and groups at the user's current location
+    $scope.goToLocation = function(location) {
+      currentLocation = location;
+      $scope.isBrowsing = true;
+      $scope.updateCurrentFolder();
+      // Clear the items in the table, then load the new folders and groups
       $scope.itemsInCurrentLocation = [];
       $scope.loadItemsInLocation(currentLocation);
     };
@@ -56,10 +57,10 @@
     /**
      * Moves the user back one folder.
      */
-    $scope.moveBackOnePath = function() {
-      // Previous path is defined as everything before the last ':'
-      var previousPath = currentLocation.substr(0, currentLocation.lastIndexOf(':'));
-      $scope.goToPath(previousPath);
+    $scope.moveBackOneFolder = function() {
+      // Previous folder is defined as everything before the last ':'
+      var previousFolder = currentLocation.substr(0, currentLocation.lastIndexOf(':'));
+      $scope.goToLocation(previousFolder);
     };
 
     /**
@@ -70,7 +71,8 @@
      */
     $scope.buildBreadcrumb = function() {
       var breadcrumb = currentLocation.split(':');
-      // Combines 'hawaii.edu' and 'store' into one breadcrumb navigator
+      // Combines 'hawaii.edu' and 'store' into one breadcrumb navigator to prevent users from going to a location
+      // outside of the store
       breadcrumb.shift();
       breadcrumb[0] = 'hawaii.edu:store';
       return breadcrumb;
@@ -86,7 +88,7 @@
       // breadcrumb as index 0, add 2 to the index clicked on to extract the new path
       pathArray = pathArray.slice(0, index + 2);
       var newPath = pathArray.join(':');
-      $scope.goToPath(newPath);
+      $scope.goToLocation(newPath);
     };
 
     /**
@@ -125,11 +127,11 @@
     };
 
     /**
-     * Updates the panel title text that tells the user which folder they're in.
+     * Updates the header text that says the user's current folder name.
      */
-    $scope.updatePanelText = function() {
+    $scope.updateCurrentFolder = function() {
       // The folder name is defined as everything after the last ':' delimiter
-      $scope.currentLocationName = currentLocation.slice(currentLocation.lastIndexOf(':') + 1, currentLocation.length);
+      $scope.currentFolder = currentLocation.slice(currentLocation.lastIndexOf(':') + 1, currentLocation.length);
     };
 
     /**
@@ -183,7 +185,7 @@
      */
     $scope.toggleFilterSelection = function(item) {
       var index = $scope.filtersSelected.indexOf(item);
-      // Filter is already selected, so have it uncheck its box
+      // Filter is already selected, so uncheck its box
       if (index > -1) {
         $scope.filtersSelected.splice(index, 1);
       } else {
@@ -199,7 +201,7 @@
       // Prevent the user from applying filters if no filters were selected
       if ($scope.filtersSelected.length > 0) {
         // Adds the 'Path' column to show users the location of the items
-        $scope.isSearching = true;
+        $scope.isBrowsing = false;
         // Loads the items that correspond to the selected filters
         $scope.itemsInCurrentLocation = [];
         $scope.filtersSelected.forEach(function(filter) {
@@ -239,8 +241,8 @@
               item.type = 'group';
               $scope.itemsInCurrentLocation.push(item);
             });
-            // Shows the path column to allow users to know what path the group was found in
-            $scope.isSearching = true;
+            // Toggle the mode to show the path column, allowing users to know what path the group was found in
+            $scope.isBrowsing = false;
           } else {
             // Otherwise display an alert saying no results were found
             $scope.errorMessages.noResultsFound = true;
@@ -254,7 +256,7 @@
      * searching/applying filters.
      */
     $scope.reset = function() {
-      $scope.goToPath(currentLocation);
+      $scope.goToLocation(currentLocation);
     };
 
   }

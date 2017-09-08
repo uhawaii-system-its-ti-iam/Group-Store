@@ -25,7 +25,7 @@
           <!-- End of breadcrumb heading -->
         </div>
         <div class="panel-body">
-          <h1 style="margin-top: -5px;">{{ currentLocationName }}</h1>
+          <h1 style="margin-top: -5px;">{{ currentFolder }}</h1>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -66,22 +66,22 @@
             <thead>
             <tr>
               <th>Name</th>
-              <th ng-if="isSearching">Path</th>
+              <th ng-if="!isBrowsing">Path</th>
             </tr>
             </thead>
             <!-- Table body when navigating throughout the store -->
-            <tbody ng-if="!isSearching">
+            <tbody ng-if="isBrowsing">
             <tr ng-if="!isUserAtHome()">
               <td>
                 <i class="fa fa-chevron-up"></i>
-                <a href="#" ng-click="moveBackOnePath()">Go back to the previous folder</a>
+                <a href="#" ng-click="moveBackOneFolder()">Go back to the previous folder</a>
               </td>
             </tr>
             <!-- Sort the items such that folders appear first, then groups -->
             <tr ng-repeat="item in itemsInCurrentLocation | orderBy: '-type'">
               <td ng-if="item.type === 'stem'">
                 <i class="fa fa-folder"></i>
-                <a href="#" ng-click="goToPath(item.name)">{{ item.extension }}</a>
+                <a href="#" ng-click="goToLocation(item.name)">{{ item.extension }}</a>
               </td>
               <td ng-if="item.type === 'group'">
                 <i class="fa fa-group"></i>
@@ -90,11 +90,11 @@
             </tr>
             </tbody>
             <!-- Table body after applying filters, or searching for groups using search bar -->
-            <tbody ng-if="isSearching">
+            <tbody ng-if="!isBrowsing">
             <tr ng-repeat="item in itemsInCurrentLocation">
               <td ng-if="item.type === 'stem'">
                 <i class="fa fa-folder"></i>
-                <a href="#" ng-click="goToPath(item.name)">{{ item.extension }}</a>
+                <a href="#" ng-click="goToLocation(item.name)">{{ item.extension }}</a>
               </td>
               <td ng-if="item.type === 'group'">
                 <i class="fa fa-group"></i>
