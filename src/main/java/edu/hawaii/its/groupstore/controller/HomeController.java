@@ -95,4 +95,11 @@ public class HomeController {
         return "search";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/group-configuration")
+    public String groupConfiguration() {
+        logger.debug("User at group configuration modal.");
+        return "group-configuration";
+    }
+
 }

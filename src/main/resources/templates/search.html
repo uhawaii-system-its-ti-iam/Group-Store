@@ -164,57 +164,9 @@
           </div>
         </div>
         <div class="panel-footer clearfix" ng-if="getAmountInCart() > 0">
-          <button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#myModal">
+          <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="openGroupConfiguration()">
             Relationship Mapping
           </button>
-        </div>
-      </div>
-      <!-- Modal -->
-      <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Relationship Mapping</h4>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div id="venn">
-                    <div id="c1" class="circle">
-                      <p>Group A</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans1"></div>
-                    </div>
-                    <div id="c2" class="circle">
-                      <p>Group B</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans2"></div>
-                    </div>
-                    <div id="c3" class="circle">
-                      <p>Group C</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans3"></div>
-                    </div>
-                    <div id="j12" class="joined">
-                      <p>Both</p>
-                      <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="both"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="list-group" ng-if="getAmountInCart() > 0">
-                    <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
-                      <div class="media-body" data-toggle="tooltip">
-                        <strong>Group:</strong> {{ group.name }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
