@@ -52,11 +52,11 @@
                      placeholder="Search for groups by name (3 characters min)" />
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button">
-                  <i class="glyphicon glyphicon-search"></i>
+                  <i class="glyphicon glyphicon-search"></i> Search
                 </button>
                 <!-- Reset button to allow users to re-browse the store after searching or applying a filter -->
                 <button class="btn btn-default" type="button" ng-click="reset()">
-                  <i class="glyphicon glyphicon-refresh"></i>
+                  <i class="glyphicon glyphicon-refresh"></i> Reload
                 </button>
               </span>
             </div>
@@ -157,15 +157,18 @@
           <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
             <span data-toggle="tooltip" data-placement="left" title="{{ group.name }}" style="font-size: 12.5px;">
               {{ group.extension }}
-              <button class="btn btn-xs btn-danger pull-right" ng-click="removeFromCart(group)">
-                <i class="glyphicon glyphicon-remove"></i>
-              </button>
             </span>
+            <button class="btn btn-xs btn-danger pull-right"
+                    ng-click="removeFromCart(group)"
+                    data-toggle="tooltip"
+                    title="Remove &quot;{{ group.extension }}&quot; from your cart">
+              <i class="glyphicon glyphicon-remove"></i>
+            </button>
           </div>
         </div>
         <div class="panel-footer clearfix" ng-if="getAmountInCart() > 0">
           <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="openGroupConfiguration()">
-            Relationship Mapping
+            <i class="fa fa-wrench"></i> Configure Groups
           </button>
         </div>
       </div>
