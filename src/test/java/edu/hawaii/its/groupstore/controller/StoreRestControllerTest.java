@@ -22,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import edu.hawaii.its.groupstore.configuration.SpringBootWebApplication;
 
-@ActiveProfiles("test")
+@ActiveProfiles("localhost")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { SpringBootWebApplication.class })
 public class StoreRestControllerTest {
