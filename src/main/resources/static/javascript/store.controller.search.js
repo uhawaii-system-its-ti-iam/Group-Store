@@ -264,7 +264,11 @@
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         templateUrl: 'group-configuration',
-        controller: 'GroupConfigurationController',
+        controller: 'GroupConfigurationController'
+      });
+
+      modal.result.catch(function() {
+        modal.close();
       });
     };
 
