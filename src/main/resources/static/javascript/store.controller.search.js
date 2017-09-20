@@ -1,5 +1,5 @@
 (function() {
-  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService) {
+  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService, $uibModal) {
 
     /** User's current location */
     var currentLocation;
@@ -257,6 +257,19 @@
      */
     $scope.reset = function() {
       $scope.goToLocation(currentLocation);
+    };
+
+    $scope.openGroupConfiguration = function() {
+      var modal = $uibModal.open({
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'group-configuration',
+        controller: 'GroupConfigurationController'
+      });
+
+      modal.result.catch(function() {
+        modal.close();
+      });
     };
 
   }

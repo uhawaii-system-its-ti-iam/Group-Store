@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h3 class="modal-title">Group Configuration</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-6">
+      <div id="venn">
+        <div id="c1" class="circle">
+          <p>Group A</p>
+          <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans1"></div>
+        </div>
+        <div id="c2" class="circle">
+          <p>Group B</p>
+          <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans2"></div>
+        </div>
+        <div id="c3" class="circle">
+          <p>Group C</p>
+          <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="ans3"></div>
+        </div>
+        <div id="j12" class="joined">
+          <p>Both</p>
+          <div id="collection" ondrop="drop(event)" ondragover="allowDrop(event)" class="both"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="list-group" ng-if="getAmountInCart() > 0">
+        <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
+          <div class="media-body" data-toggle="tooltip">
+            <strong>Group:</strong> {{ group.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" ng-click="closeModal()">
+    <i class="fa fa-remove"></i> Close
+  </button>
+</div>
