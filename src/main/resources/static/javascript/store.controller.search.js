@@ -1,5 +1,5 @@
 (function() {
-  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService, $uibModal) {
+  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService, STORE_HOME, $uibModal) {
 
     /** User's current location */
     var currentLocation;
@@ -38,7 +38,7 @@
       $scope.filtersSelected = [];
       $scope.isBrowsing = true;
       // Move the user to the Group Store home directory
-      $scope.goToLocation('hawaii.edu:store');
+      $scope.goToLocation(STORE_HOME);
     };
 
     /**
@@ -74,7 +74,7 @@
       // Combines 'hawaii.edu' and 'store' into one breadcrumb navigator to prevent users from going to a location
       // outside of the store
       breadcrumb.shift();
-      breadcrumb[0] = 'hawaii.edu:store';
+      breadcrumb[0] = STORE_HOME;
       return breadcrumb;
     };
 
@@ -123,7 +123,7 @@
      * @returns {boolean} true if the user is at the home directory, otherwise returns false
      */
     $scope.isUserAtHome = function() {
-      return currentLocation === 'hawaii.edu:store';
+      return currentLocation === STORE_HOME;
     };
 
     /**
