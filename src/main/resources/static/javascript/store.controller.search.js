@@ -39,6 +39,7 @@
       $scope.isBrowsing = true;
       // Move the user to the Group Store home directory
       $scope.goToLocation(STORE_HOME);
+      // $scope.buildFilters();
     };
 
     /**
@@ -271,6 +272,45 @@
         modal.close();
       });
     };
+
+    // $scope.buildFilters = function() {
+    //   var filters = [];
+    //   var stack = [];
+    //   stack.push(STORE_HOME);
+    //   buildFilterHelper(stack, filters);
+    // };
+    //
+    // function buildFilterHelper(stack, filters) {
+    //   if (stack.length > 0) {
+    //     var folderToCheck = stack.shift();
+    //     folderToCheck = typeof folderToCheck === 'string' ? folderToCheck : folderToCheck.name;
+    //     if (folderToCheck.split(':').length >= 7) {
+    //       filters.push(folderToCheck.split(':').slice(0, 5).join(':'));
+    //       stack = stack.filter(function(folder) {
+    //         return !folder.name.startsWith(folderToCheck.split(':').slice(0, 5).join(':'));
+    //       });
+    //       buildFilterHelper(stack, filters);
+    //     }
+    //     var stemsUrl = encodeURI('/store/api/stems/children/' + folderToCheck + '/');
+    //     dataProvider.loadData(function(d) {
+    //       var data = d.data;
+    //       if (data.length > 0 && folderToCheck.split(':').length < 7) {
+    //         data.forEach(function(folder) {
+    //           stack.unshift(folder);
+    //         });
+    //         buildFilterHelper(stack, filters);
+    //       } else if (data.length === 0 && folderToCheck.split(':').length < 7) {
+    //           filters.push(folderToCheck.split(':').slice(0, 4).join(':'));
+    //           stack = stack.filter(function(folder) {
+    //             return !folder.name.startsWith(folderToCheck.split(':').slice(0, 5).join(':'));
+    //           });
+    //           buildFilterHelper(stack, filters);
+    //         }
+    //       }, stemsUrl);
+    //   } else {
+    //     return _.uniq(filters).reverse();
+    //   }
+    // }
 
   }
   storeApp.controller('StoreController', StoreController);
