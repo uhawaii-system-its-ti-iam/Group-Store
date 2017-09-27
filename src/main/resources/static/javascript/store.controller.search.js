@@ -22,6 +22,8 @@
     /** User's query when executing a search */
     $scope.queryEntered;
 
+    $scope.loading;
+
     /** Used for displaying alerts for various errors */
     $scope.errorMessages = [
       { notEnoughCharacters: false },
@@ -99,6 +101,7 @@
     $scope.loadItemsInLocation = function(path) {
       var stemsUrl = encodeURI('/store/api/stems/children/' + path + '/');
       var groupsUrl = encodeURI('/store/api/groups/path/' + path + '/');
+      $scope.loading = true;
       // Load stems/folders
       dataProvider.loadData(function(d) {
         var data = d.data;
@@ -107,16 +110,20 @@
           item.type = 'stem';
           $scope.itemsInCurrentLocation.push(item);
         });
-      }, stemsUrl);
-      // Load groups
-      dataProvider.loadData(function(d) {
-        var data = d.data;
-        data.forEach(function(item) {
-          // Attach a 'type' property with the value of 'group' to differentiate these with stems/folders
-          item.type = 'group';
-          $scope.itemsInCurrentLocation.push(item);
-        });
-      }, groupsUrl);
+      }, stemsUrl)
+          .then(function() {
+            dataProvider.loadData(function(d) {
+              var data = d.data;
+              data.forEach(function(item) {
+                // Attach a 'type' property with the value of 'group' to differentiate these with stems/folders
+                item.type = 'group';
+                $scope.itemsInCurrentLocation.push(item);
+              });
+            }, groupsUrl);
+          })
+          .finally(function() {
+            $scope.loading = false;
+          })
     };
 
     /**
@@ -233,6 +240,7 @@
         $scope.errorMessages.noResultsFound = false;
         $scope.errorMessages.notEnoughCharacters = false;
         var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
+        $scope.loading = true;
         dataProvider.loadData(function (d) {
           var data = d.data;
           // Results were found, so load them onto the table and display it
@@ -248,7 +256,10 @@
             // Otherwise display an alert saying no results were found
             $scope.errorMessages.noResultsFound = true;
           }
-        }, groupsUrl);
+        }, groupsUrl)
+            .finally(function() {
+              $scope.loading = false;
+            })
       }
     };
 

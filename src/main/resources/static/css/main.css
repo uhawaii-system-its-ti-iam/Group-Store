@@ -291,3 +291,13 @@ td.uh-pre {
     padding-bottom: 4.3px;
     padding-top: 4.3px;
 }
+
+#loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform: -webkit-translate(-50%, -50%);
+    transform: -moz-translate(-50%, -50%);
+    transform: -ms-translate(-50%, -50%);
+}

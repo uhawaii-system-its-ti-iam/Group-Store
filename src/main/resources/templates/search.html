@@ -175,6 +175,10 @@
     </div>
     <!-- End of cart section -->
   </div>
+  <div id="loading-spinner" ng-if="loading">
+    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
 </div>
 <div th:replace="footer :: copy"></div>
 </body>
