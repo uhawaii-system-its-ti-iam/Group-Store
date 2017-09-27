@@ -155,13 +155,13 @@
         </div>
         <div class="list-group" ng-if="getAmountInCart() > 0">
           <div class="list-group-item" ng-repeat="group in getGroupsInCart()">
-            <span data-toggle="tooltip" data-placement="left" title="{{ group.name }}" style="font-size: 12.5px;">
-              {{ group.extension }}
+            <span data-toggle="tooltip" data-placement="left" title="{{ group }}" style="font-size: 12.5px;">
+              {{ getGroupName(group) }}
             </span>
             <button class="btn btn-xs btn-danger pull-right"
                     ng-click="removeFromCart(group)"
                     data-toggle="tooltip"
-                    title="Remove &quot;{{ group.extension }}&quot; from your cart">
+                    title="Remove &quot;{{ group }}&quot; from your cart">
               <i class="glyphicon glyphicon-remove"></i>
             </button>
           </div>

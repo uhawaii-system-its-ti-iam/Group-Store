@@ -140,7 +140,7 @@
      * @param {object} group - the group to add
      */
     $scope.addToCart = function(group) {
-      CartService.addToCart(group);
+      CartService.addToCart(group.name);
     }
 
     /**
@@ -312,6 +312,16 @@
     //     return _.uniq(filters).reverse();
     //   }
     // }
+
+    /**
+     * Returns the name of the group (everything after the last semicolon (':') when passed in the group's full path).
+     * @param {string} group - the full path of the group
+     * @returns {string} the name of the group
+     */
+    $scope.getGroupName = function(group) {
+      var lastSemicolonPosition = group.lastIndexOf(':');
+      return group.substring(lastSemicolonPosition + 1, group.length);
+    }
 
   }
   storeApp.controller('StoreController', StoreController);
