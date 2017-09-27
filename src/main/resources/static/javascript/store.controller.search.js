@@ -1,5 +1,5 @@
 (function() {
-  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService, $uibModal) {
+  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService, STORE_HOME, $uibModal) {
 
     /** User's current location */
     var currentLocation;
@@ -22,6 +22,8 @@
     /** User's query when executing a search */
     $scope.queryEntered;
 
+    $scope.loading;
+
     /** Used for displaying alerts for various errors */
     $scope.errorMessages = [
       { notEnoughCharacters: false },
@@ -38,7 +40,8 @@
       $scope.filtersSelected = [];
       $scope.isBrowsing = true;
       // Move the user to the Group Store home directory
-      $scope.goToLocation('hawaii.edu:store');
+      $scope.goToLocation(STORE_HOME);
+      // $scope.buildFilters();
     };
 
     /**
@@ -74,7 +77,7 @@
       // Combines 'hawaii.edu' and 'store' into one breadcrumb navigator to prevent users from going to a location
       // outside of the store
       breadcrumb.shift();
-      breadcrumb[0] = 'hawaii.edu:store';
+      breadcrumb[0] = STORE_HOME;
       return breadcrumb;
     };
 
@@ -98,6 +101,7 @@
     $scope.loadItemsInLocation = function(path) {
       var stemsUrl = encodeURI('/store/api/stems/children/' + path + '/');
       var groupsUrl = encodeURI('/store/api/groups/path/' + path + '/');
+      $scope.loading = true;
       // Load stems/folders
       dataProvider.loadData(function(d) {
         var data = d.data;
@@ -106,16 +110,20 @@
           item.type = 'stem';
           $scope.itemsInCurrentLocation.push(item);
         });
-      }, stemsUrl);
-      // Load groups
-      dataProvider.loadData(function(d) {
-        var data = d.data;
-        data.forEach(function(item) {
-          // Attach a 'type' property with the value of 'group' to differentiate these with stems/folders
-          item.type = 'group';
-          $scope.itemsInCurrentLocation.push(item);
-        });
-      }, groupsUrl);
+      }, stemsUrl)
+          .then(function() {
+            dataProvider.loadData(function(d) {
+              var data = d.data;
+              data.forEach(function(item) {
+                // Attach a 'type' property with the value of 'group' to differentiate these with stems/folders
+                item.type = 'group';
+                $scope.itemsInCurrentLocation.push(item);
+              });
+            }, groupsUrl);
+          })
+          .finally(function() {
+            $scope.loading = false;
+          })
     };
 
     /**
@@ -123,7 +131,7 @@
      * @returns {boolean} true if the user is at the home directory, otherwise returns false
      */
     $scope.isUserAtHome = function() {
-      return currentLocation === 'hawaii.edu:store';
+      return currentLocation === STORE_HOME;
     };
 
     /**
@@ -139,7 +147,7 @@
      * @param {object} group - the group to add
      */
     $scope.addToCart = function(group) {
-      CartService.addToCart(group);
+      CartService.addToCart(group.name);
     }
 
     /**
@@ -232,6 +240,7 @@
         $scope.errorMessages.noResultsFound = false;
         $scope.errorMessages.notEnoughCharacters = false;
         var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
+        $scope.loading = true;
         dataProvider.loadData(function (d) {
           var data = d.data;
           // Results were found, so load them onto the table and display it
@@ -247,7 +256,10 @@
             // Otherwise display an alert saying no results were found
             $scope.errorMessages.noResultsFound = true;
           }
-        }, groupsUrl);
+        }, groupsUrl)
+            .finally(function() {
+              $scope.loading = false;
+            })
       }
     };
 
@@ -264,13 +276,63 @@
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         templateUrl: 'group-configuration',
-        controller: 'GroupConfigurationController'
+        controller: 'GroupConfigurationController',
+        size: 'lg'
       });
 
       modal.result.catch(function() {
         modal.close();
       });
     };
+
+    // $scope.buildFilters = function() {
+    //   var filters = [];
+    //   var stack = [];
+    //   stack.push(STORE_HOME);
+    //   buildFilterHelper(stack, filters);
+    // };
+    //
+    // function buildFilterHelper(stack, filters) {
+    //   if (stack.length > 0) {
+    //     var folderToCheck = stack.shift();
+    //     folderToCheck = typeof folderToCheck === 'string' ? folderToCheck : folderToCheck.name;
+    //     if (folderToCheck.split(':').length >= 7) {
+    //       filters.push(folderToCheck.split(':').slice(0, 5).join(':'));
+    //       stack = stack.filter(function(folder) {
+    //         return !folder.name.startsWith(folderToCheck.split(':').slice(0, 5).join(':'));
+    //       });
+    //       buildFilterHelper(stack, filters);
+    //     }
+    //     var stemsUrl = encodeURI('/store/api/stems/children/' + folderToCheck + '/');
+    //     dataProvider.loadData(function(d) {
+    //       var data = d.data;
+    //       if (data.length > 0 && folderToCheck.split(':').length < 7) {
+    //         data.forEach(function(folder) {
+    //           stack.unshift(folder);
+    //         });
+    //         buildFilterHelper(stack, filters);
+    //       } else if (data.length === 0 && folderToCheck.split(':').length < 7) {
+    //           filters.push(folderToCheck.split(':').slice(0, 4).join(':'));
+    //           stack = stack.filter(function(folder) {
+    //             return !folder.name.startsWith(folderToCheck.split(':').slice(0, 5).join(':'));
+    //           });
+    //           buildFilterHelper(stack, filters);
+    //         }
+    //       }, stemsUrl);
+    //   } else {
+    //     return _.uniq(filters).reverse();
+    //   }
+    // }
+
+    /**
+     * Returns the name of the group (everything after the last semicolon (':') when passed in the group's full path).
+     * @param {string} group - the full path of the group
+     * @returns {string} the name of the group
+     */
+    $scope.getGroupName = function(group) {
+      var lastSemicolonPosition = group.lastIndexOf(':');
+      return group.substring(lastSemicolonPosition + 1, group.length);
+    }
 
   }
   storeApp.controller('StoreController', StoreController);

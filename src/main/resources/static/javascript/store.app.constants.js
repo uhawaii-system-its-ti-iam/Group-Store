@@ -76,3 +76,5 @@ storeApp.constant('FILTER_OPTIONS', [
     ]
   }
 ]);
+
+storeApp.constant('STORE_HOME', 'hawaii.edu:store');
