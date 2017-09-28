@@ -8,7 +8,7 @@
       <div class="col-md-6 col-md-push-6">
         <h4 class="text-center">Cart</h4>
         <ul class="list-group">
-          <li class="list-group-item" ng-repeat="group in getGroupsInCart()">
+          <li class="list-group-item" ng-class="{ 'list-group-item-info': $first, 'list-group-item-warning': $last, 'list-group-item-success': ($index === 1 &amp;&amp; !$last) }" ng-repeat="group in getGroupsInCart()">
             <b>{{ getCorrespondingLetter($index) }}</b>: {{ group }}
           </li>
         </ul>
