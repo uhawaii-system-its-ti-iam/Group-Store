@@ -25,7 +25,14 @@
           <!-- End of breadcrumb heading -->
         </div>
         <div class="panel-body">
-          <h1 style="margin-top: -5px;">{{ currentFolder }}</h1>
+          <h1 style="margin-top: -5px;">
+            {{ currentFolder }}
+            <span class="pull-right">
+              <button ng-if="!isBrowsing" class="btn btn-default btn-md" type="button" ng-click="reset()">
+              <i class="fa fa-arrow-left"></i> Go Back to Browsing
+            </button>
+            </span>
+          </h1>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -53,10 +60,6 @@
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button">
                   <i class="glyphicon glyphicon-search"></i> Search
-                </button>
-                <!-- Reset button to allow users to re-browse the store after searching or applying a filter -->
-                <button class="btn btn-default" type="button" ng-click="reset()">
-                  <i class="glyphicon glyphicon-refresh"></i> Reload
                 </button>
               </span>
             </div>
