@@ -30,6 +30,8 @@
       { noResultsFound: false }
     ];
 
+    // $scope.filterTree = [];
+
     /**
      * Initialization of Group Store UI. Moves the user to the home directory.
      */
@@ -322,6 +324,24 @@
     //   } else {
     //     return _.uniq(filters).reverse();
     //   }
+    // }
+    //
+    // function buildTree(filters) {
+    //   filters.forEach(function(filter) {
+    //     var splitFilter = filter.split(':');
+    //     splitFilter.splice(0, 2);
+    //     var current = $scope.filterTree;
+    //     for (var i = 0; i < splitFilter.length; i++) {
+    //       if (_.find(current, { name: splitFilter[i] })) {
+    //         var found = _.find(current, { name: splitFilter[i] });
+    //         current = found.children;
+    //       } else {
+    //         current.push({ name: splitFilter[i], path: STORE_HOME.concat(':', splitFilter.slice(0, i + 1).join(':')), children: [] });
+    //         current = current[current.length - 1].children;
+    //       }
+    //     }
+    //   });
+    //   console.log($scope.filterTree);
     // }
 
     /**
