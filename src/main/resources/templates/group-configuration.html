@@ -17,6 +17,7 @@
           <label ng-if="option.name !== 'default'">
             <input type="radio" name="twoVennSelection" ng-click="setSelected(option)"/> {{ option.name }}
           </label>
+          <span ng-if="option.name !== 'default'">: {{ option.description(getGroupsInCart()) }}</span>
         </div>
       </div>
       <div class="col-md-6 col-md-pull-6">
