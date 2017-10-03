@@ -4,16 +4,60 @@
     /** The possible ways for groups to be configured. The properties are just the number of groups selected */
     $scope.vennOptions = {
       2: [
-        { name: 'A ∪ B', description: 'People in either group A or group B', image: 'a-union-b.png' },
-        { name: 'A ∩ B', description: 'People in both group A and group B', image: 'a-intersect-b.png' },
-        { name: 'A - B', description: 'People in group A, but are not in group B', image: 'a-minus-b.png' },
-        { name: 'B - A', description: 'People in group B, but are not in group A', image: 'b-minus-a.png' },
-        { name: 'default', description: '', image: 'two-default.png' }
+        {
+          name: 'A ∪ B',
+          description: function(groups) {
+            return 'Members of the ' + getGroupName(groups[0]) + ' group and the ' + getGroupName(groups[1]) + ' group, combined.';
+          },
+          image: 'a-union-b.png'
+        },
+        {
+          name: 'A ∩ B',
+          description: function(groups) {
+            return 'Members who belong in both ' + getGroupName(groups[0]) + ' and ' + getGroupName(groups[1]) + '.';
+          },
+          image: 'a-intersect-b.png'
+        },
+        {
+          name: 'A - B',
+          description: function(groups) {
+            return 'Members who are in the ' + getGroupName(groups[0]) + ' group, but not in the ' + getGroupName(groups[1]) + ' group.';
+          },
+          image: 'a-minus-b.png'
+        },
+        {
+          name: 'B - A',
+          description: function(groups) {
+            return 'Members who are in the ' + getGroupName(groups[1]) + ' group, but not in the ' + getGroupName(groups[0]) + ' group.';
+          },
+          image: 'b-minus-a.png'
+        },
+        {
+          name: 'default',
+          description: '',
+          image: 'two-default.png'
+        }
       ],
       3: [
-        { name: 'A ∪ B ∪ C', description: 'Combine people in groups A, B, and C', image: 'a-union-b-union-c.png' },
-        { name: 'A ∩ B ∩ C', description: 'People in groups A, B, and C', image: 'a-intersect-b-intersect-c.png' },
-        { name: 'default', description: '', image: 'three-default.png' }
+        {
+          name: 'A ∪ B ∪ C',
+          description: function(groups) {
+            return 'Members of the ' + getGroupName(groups[0]) + ' group, the ' + getGroupName(groups[1]) + ' group, and the ' + getGroupName(groups[2]) + ' group, combined.';
+          },
+          image: 'a-union-b-union-c.png'
+        },
+        {
+          name: 'A ∩ B ∩ C',
+          description: function(groups) {
+            return 'Members who belong in all three ' + getGroupName(groups[0]) + ', ' + getGroupName(groups[1]) + ', and ' + getGroupName(groups[2]) + ' groups.';
+          },
+          image: 'a-intersect-b-intersect-c.png'
+        },
+        {
+          name: 'default',
+          description: '',
+          image: 'three-default.png'
+        }
       ]
     };
 
@@ -72,6 +116,16 @@
     $scope.getCorrespondingLetter = function(index) {
       return String.fromCharCode(index + 65);
     };
+
+    /**
+     * Returns the name of the group (everything after the last semicolon (':') when passed in the group's full path).
+     * @param {string} group - the full path of the group
+     * @returns {string} the name of the group
+     */
+    function getGroupName(group) {
+      var lastSemicolonPosition = group.lastIndexOf(':');
+      return group.substring(lastSemicolonPosition + 1, group.length);
+    }
 
   }
 

@@ -263,12 +263,6 @@ td.uh-pre {
 
 /* -------------------------------------------------------- */
 
-.panel.panel-default.panel-not-rounded {
-    border-radius: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-}
-
 .breadcrumb.breadcrumb-header {
     padding: 0px 0px 0px 0px;
     margin-bottom: 0px;
