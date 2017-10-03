@@ -35,7 +35,7 @@
         {
           name: 'default',
           description: '',
-          image: 'two-default.png'
+          image: 'a-union-b.png'
         }
       ],
       3: [
@@ -56,7 +56,7 @@
         {
           name: 'default',
           description: '',
-          image: 'three-default.png'
+          image: 'a-union-b-union-c.png'
         }
       ]
     };
