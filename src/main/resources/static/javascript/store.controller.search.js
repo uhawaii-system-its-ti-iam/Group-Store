@@ -25,10 +25,10 @@
     $scope.loading;
 
     /** Used for displaying alerts for various errors */
-    $scope.errorMessages = [
-      { notEnoughCharacters: false },
-      { noResultsFound: false }
-    ];
+    $scope.errorMessages = {
+      notEnoughCharacters: false,
+      noResultsFound: false,
+    }
 
     // $scope.filterTree = [];
 
@@ -238,11 +238,9 @@
       } else {
         // Store the query entered in case no results are found
         $scope.queryEntered = $scope.searchQuery;
-        // Hide all alerts related to searching
-        $scope.errorMessages.noResultsFound = false;
-        $scope.errorMessages.notEnoughCharacters = false;
-        var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
+        $scope.closeErrorMessages();
         $scope.loading = true;
+        var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
         dataProvider.loadData(function (d) {
           var data = d.data;
           // Results were found, so load them onto the table and display it
@@ -356,6 +354,12 @@
 
     $scope.getLocationOfItem = function(path) {
       return path.substring(0, path.lastIndexOf(':'));
+    };
+
+    $scope.closeErrorMessages = function() {
+      _.forOwn($scope.errorMessages, function(_, key) {
+        $scope.errorMessages[key] = false;
+      });
     };
 
   }
