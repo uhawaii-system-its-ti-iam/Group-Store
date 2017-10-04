@@ -8,13 +8,13 @@
     <!--  Content container -->
     <div class="container">
         <div class="jumbotron">
-            <h1 class="dropshadow">Identity <span class="amp">&amp;</span> Access Management<br/>CAS Demonstration</h1>
-            <p class="lead" th:text="${jumbotron}"></p>
+            <h1 class="dropshadow">UH Group Store</h1>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
             <div sec:authorize="isAnonymous()">
-                <p><a class="btn btn-lg btn-success" href="/casdemo/login"  th:href="@{/login}"  role="button">UH Login Here</a></p>
+                <p><a class="btn btn-lg btn-success" th:href="@{/login}"  role="button">Login Here</a></p>
             </div>
             <div sec:authorize="isAuthenticated()">
-                <form action="/casdemo/logout" th:action="@{/logout}" method="post" id="logout_form">
+                <form th:action="@{/logout}" method="post" id="logout_form">
                     <button class="btn btn-lg btn-default" type="submit">Logout</button>
                 </form>
             </div>
