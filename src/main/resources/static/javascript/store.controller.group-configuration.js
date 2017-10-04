@@ -40,18 +40,32 @@
       ],
       3: [
         {
-          name: 'A ∪ B ∪ C',
+          name: '(A ∪ B) ∪ C',
           description: function(groups) {
             return 'Members of the ' + getGroupName(groups[0]) + ' group, the ' + getGroupName(groups[1]) + ' group, and the ' + getGroupName(groups[2]) + ' group, combined.';
           },
           image: 'a-union-b-union-c.png'
         },
         {
-          name: 'A ∩ B ∩ C',
+          name: '(A ∩ B) ∩ C',
           description: function(groups) {
             return 'Members who belong in all three ' + getGroupName(groups[0]) + ', ' + getGroupName(groups[1]) + ', and ' + getGroupName(groups[2]) + ' groups.';
           },
           image: 'a-intersect-b-intersect-c.png'
+        },
+        {
+          name: 'A ∩ (B ∪ C)',
+          description: function(groups) {
+            return 'Members who belong in both the ' + getGroupName(groups[0]) + ' group, and the combination of the ' + getGroupName(groups[1]) + ' and ' + getGroupName(groups[2]) + ' groups.'
+          },
+          image: 'a-intersect-b-union-c.png'
+        },
+        {
+          name: 'A ∪ (B ∩ C)',
+          description: function(groups) {
+            return 'Members of the ' + getGroupName(groups[0]) + ' combined with members who are in both the ' + getGroupName(groups[1]) + ' and ' + getGroupName(groups[2]) + ' groups.'
+          },
+          image: 'a-union-b-intersect-c.png'
         },
         {
           name: 'default',
