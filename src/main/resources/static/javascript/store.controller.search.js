@@ -352,7 +352,11 @@
     $scope.getGroupName = function(group) {
       var lastSemicolonPosition = group.lastIndexOf(':');
       return group.substring(lastSemicolonPosition + 1, group.length);
-    }
+    };
+
+    $scope.getLocationOfItem = function(path) {
+      return path.substring(0, path.lastIndexOf(':'));
+    };
 
   }
   storeApp.controller('StoreController', StoreController);
