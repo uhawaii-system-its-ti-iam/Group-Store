@@ -329,13 +329,25 @@
     //     var splitFilter = filter.split(':');
     //     splitFilter.splice(0, 2);
     //     var current = $scope.filterTree;
+    //     // Iterate through each folder of the filter path
     //     for (var i = 0; i < splitFilter.length; i++) {
-    //       if (_.find(current, { name: splitFilter[i] })) {
-    //         var found = _.find(current, { name: splitFilter[i] });
-    //         current = found.children;
+    //       var folder = _.find(current, { text: splitFilter[i] });
+    //       if (!!folder) {
+    //         // Add a 'nodes' property if it doesn't have one already to traverse 1 level deeper
+    //         if (!folder.nodes) {
+    //           folder.nodes = [];
+    //         }
+    //         // Move down 1 level deeper
+    //         current = folder.nodes;
     //       } else {
-    //         current.push({ name: splitFilter[i], path: STORE_HOME.concat(':', splitFilter.slice(0, i + 1).join(':')), children: [] });
-    //         current = current[current.length - 1].children;
+    //         var newFolder = { text: splitFilter[i], path: STORE_HOME.concat(':', splitFilter.slice(0, i + 1).join(':')) };
+    //         // Ensure that only non-leaves have a 'nodes' property
+    //         if (i !== splitFilter.length - 1) {
+    //           newFolder.nodes = [];
+    //         }
+    //         current.push(newFolder);
+    //         // Move down 1 level deeper
+    //         current = newFolder.nodes;
     //       }
     //     }
     //   });
