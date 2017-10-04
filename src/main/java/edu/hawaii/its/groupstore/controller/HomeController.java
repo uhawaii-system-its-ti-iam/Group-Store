@@ -39,7 +39,7 @@ public class HomeController {
     @GetMapping(value = "/login")
     public String login() {
         logger.debug("User at login.");
-        return "redirect:/user";
+        return "redirect:/home";
     }
 
     @GetMapping(value = { "/holiday", "/holidays" })
