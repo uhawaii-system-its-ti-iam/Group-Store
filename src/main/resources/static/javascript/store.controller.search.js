@@ -38,12 +38,10 @@
     $scope.init = function() {
       // Load the groups in the cart from a previous session (if any)
       CartService.loadCart();
-      $scope.availableFilters = FILTER_OPTIONS;
-      $scope.filtersSelected = [];
       $scope.isBrowsing = true;
       // Move the user to the Group Store home directory
       $scope.goToLocation(STORE_HOME);
-      // $scope.buildFilters();
+      $scope.buildFilterTree();
     };
 
     /**
@@ -172,59 +170,6 @@
      */
     $scope.getGroupsInCart = function() {
       return CartService.getGroupsInCart();
-    };
-
-    /**
-     * Toggles the icon next to the name of the source in the filters column. Used to expand/collapse the possible
-     * filters.
-     * @param {object} element - the element's whose icon should be toggled
-     */
-    $scope.toggleFilterSourceIcon = function(element) {
-      if ($(element).hasClass('glyphicon-plus')) {
-        $(element).removeClass('glyphicon-plus');
-        $(element).addClass('glyphicon-minus');
-      } else {
-        $(element).removeClass('glyphicon-minus');
-        $(element).addClass('glyphicon-plus');
-      }
-    };
-
-    /**
-     * Toggles a filter's checkbox when selected.
-     * @param {object} item - the filter item to toggle
-     */
-    $scope.toggleFilterSelection = function(item) {
-      var index = $scope.filtersSelected.indexOf(item);
-      // Filter is already selected, so uncheck its box
-      if (index > -1) {
-        $scope.filtersSelected.splice(index, 1);
-      } else {
-        // Not selected, so check the box
-        $scope.filtersSelected.push(item);
-      }
-    };
-
-    /**
-     * Applies the filters selected by the user.
-     */
-    $scope.applyFilters = function() {
-      // Prevent the user from applying filters if no filters were selected
-      if ($scope.filtersSelected.length > 0) {
-        // Adds the 'Path' column to show users the location of the items
-        $scope.isBrowsing = false;
-        // Loads the items that correspond to the selected filters
-        $scope.itemsInCurrentLocation = [];
-        $scope.filtersSelected.forEach(function(filter) {
-          $scope.loadItemsInLocation(filter.path);
-        });
-      }
-    };
-
-    /**
-     * Clears the filters selected by the user.
-     */
-    $scope.clearFilters = function() {
-      $scope.filtersSelected = [];
     };
 
     /**
@@ -372,6 +317,27 @@
       _.forOwn($scope.errorMessages, function(_, key) {
         $scope.errorMessages[key] = false;
       });
+    };
+
+    $scope.buildFilterTree = function() {
+      $('#filter-tree').treeview({
+        data: FILTER_OPTIONS,
+        highlightSelected: false,
+        levels: 1,
+        showBorder: false,
+        showCheckbox: true
+      })
+    };
+
+    $scope.applyFilters = function() {
+      var checkedFilters = $('#filter-tree').treeview('getChecked');
+      if (checkedFilters.length > 0) {
+        $scope.itemsInCurrentLocation = [];
+        $scope.isBrowsing = false;
+        checkedFilters.forEach(function(item) {
+          $scope.loadItemsInLocation(item.path);
+        });
+      }
     };
 
   }

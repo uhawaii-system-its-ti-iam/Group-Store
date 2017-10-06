@@ -116,28 +116,8 @@
     <!-- Filter section -->
     <div class="col-lg-3 col-lg-pull-6">
       <h4>Filters</h4>
-      <div class="media" ng-repeat="item in availableFilters">
-        <div class="media-left">
-          <i class="glyphicon glyphicon-plus"
-             role="button"
-             data-toggle="collapse"
-             data-target="#collapse{{ $index }}"
-             ng-click="toggleFilterSourceIcon($event.currentTarget)"></i>
-        </div>
-          <div class="media-body">
-            <span>{{ item.name }}</span>
-            <div id="collapse{{ $index }}" class="collapse">
-              <div class="checkbox" ng-repeat="child in item.children">
-                <label>
-                  <input type="checkbox"
-                         ng-checked="filtersSelected.indexOf(child) > -1"
-                         ng-click="toggleFilterSelection(child)" /> {{ child.name }}
-                </label>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="text-right" style="padding-top: 15px; padding-bottom: 15px;">
+      <div id="filter-tree"></div>
+      <div class="text-right">
         <div class="btn-group" role="group">
           <button class="btn btn-default btn-sm" ng-click="clearFilters()">Clear Filters</button>
           <button class="btn btn-primary btn-sm" ng-click="applyFilters()">Apply Filters</button>
