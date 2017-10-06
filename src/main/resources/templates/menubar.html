@@ -20,7 +20,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a th:href="@{/}">Home</a></li>
         <li sec:authorize="isAuthenticated()">
-          <a th:href="@{/search}">Search for Groups</a>
+          <a th:href="@{/search}">Browse Store</a>
         </li>
         <li sec:authorize="isAnonymous()">
           <a th:href="@{/login}">Log In</a>
