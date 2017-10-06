@@ -25,10 +25,10 @@
     $scope.loading;
 
     /** Used for displaying alerts for various errors */
-    $scope.errorMessages = [
-      { notEnoughCharacters: false },
-      { noResultsFound: false }
-    ];
+    $scope.errorMessages = {
+      notEnoughCharacters: false,
+      noResultsFound: false,
+    }
 
     // $scope.filterTree = [];
 
@@ -38,12 +38,10 @@
     $scope.init = function() {
       // Load the groups in the cart from a previous session (if any)
       CartService.loadCart();
-      $scope.availableFilters = FILTER_OPTIONS;
-      $scope.filtersSelected = [];
       $scope.isBrowsing = true;
       // Move the user to the Group Store home directory
       $scope.goToLocation(STORE_HOME);
-      // $scope.buildFilters();
+      $scope.buildFilterTree();
     };
 
     /**
@@ -175,59 +173,6 @@
     };
 
     /**
-     * Toggles the icon next to the name of the source in the filters column. Used to expand/collapse the possible
-     * filters.
-     * @param {object} element - the element's whose icon should be toggled
-     */
-    $scope.toggleFilterSourceIcon = function(element) {
-      if ($(element).hasClass('glyphicon-plus')) {
-        $(element).removeClass('glyphicon-plus');
-        $(element).addClass('glyphicon-minus');
-      } else {
-        $(element).removeClass('glyphicon-minus');
-        $(element).addClass('glyphicon-plus');
-      }
-    };
-
-    /**
-     * Toggles a filter's checkbox when selected.
-     * @param {object} item - the filter item to toggle
-     */
-    $scope.toggleFilterSelection = function(item) {
-      var index = $scope.filtersSelected.indexOf(item);
-      // Filter is already selected, so uncheck its box
-      if (index > -1) {
-        $scope.filtersSelected.splice(index, 1);
-      } else {
-        // Not selected, so check the box
-        $scope.filtersSelected.push(item);
-      }
-    };
-
-    /**
-     * Applies the filters selected by the user.
-     */
-    $scope.applyFilters = function() {
-      // Prevent the user from applying filters if no filters were selected
-      if ($scope.filtersSelected.length > 0) {
-        // Adds the 'Path' column to show users the location of the items
-        $scope.isBrowsing = false;
-        // Loads the items that correspond to the selected filters
-        $scope.itemsInCurrentLocation = [];
-        $scope.filtersSelected.forEach(function(filter) {
-          $scope.loadItemsInLocation(filter.path);
-        });
-      }
-    };
-
-    /**
-     * Clears the filters selected by the user.
-     */
-    $scope.clearFilters = function() {
-      $scope.filtersSelected = [];
-    };
-
-    /**
      * Searches for groups matching the query entered by the user in the search bar, then loads them for display onto
      * the table.
      */
@@ -238,11 +183,9 @@
       } else {
         // Store the query entered in case no results are found
         $scope.queryEntered = $scope.searchQuery;
-        // Hide all alerts related to searching
-        $scope.errorMessages.noResultsFound = false;
-        $scope.errorMessages.notEnoughCharacters = false;
-        var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
+        $scope.closeErrorMessages();
         $scope.loading = true;
+        var groupsUrl = encodeURI('/store/api/groups/name/' + $scope.searchQuery + '/');
         dataProvider.loadData(function (d) {
           var data = d.data;
           // Results were found, so load them onto the table and display it
@@ -331,13 +274,25 @@
     //     var splitFilter = filter.split(':');
     //     splitFilter.splice(0, 2);
     //     var current = $scope.filterTree;
+    //     // Iterate through each folder of the filter path
     //     for (var i = 0; i < splitFilter.length; i++) {
-    //       if (_.find(current, { name: splitFilter[i] })) {
-    //         var found = _.find(current, { name: splitFilter[i] });
-    //         current = found.children;
+    //       var folder = _.find(current, { text: splitFilter[i] });
+    //       if (!!folder) {
+    //         // Add a 'nodes' property if it doesn't have one already to traverse 1 level deeper
+    //         if (!folder.nodes) {
+    //           folder.nodes = [];
+    //         }
+    //         // Move down 1 level deeper
+    //         current = folder.nodes;
     //       } else {
-    //         current.push({ name: splitFilter[i], path: STORE_HOME.concat(':', splitFilter.slice(0, i + 1).join(':')), children: [] });
-    //         current = current[current.length - 1].children;
+    //         var newFolder = { text: splitFilter[i], path: STORE_HOME.concat(':', splitFilter.slice(0, i + 1).join(':')) };
+    //         // Ensure that only non-leaves have a 'nodes' property
+    //         if (i !== splitFilter.length - 1) {
+    //           newFolder.nodes = [];
+    //         }
+    //         current.push(newFolder);
+    //         // Move down 1 level deeper
+    //         current = newFolder.nodes;
     //       }
     //     }
     //   });
@@ -352,7 +307,42 @@
     $scope.getGroupName = function(group) {
       var lastSemicolonPosition = group.lastIndexOf(':');
       return group.substring(lastSemicolonPosition + 1, group.length);
-    }
+    };
+
+    $scope.getLocationOfItem = function(path) {
+      return path.substring(0, path.lastIndexOf(':'));
+    };
+
+    $scope.closeErrorMessages = function() {
+      _.forOwn($scope.errorMessages, function(_, key) {
+        $scope.errorMessages[key] = false;
+      });
+    };
+
+    $scope.buildFilterTree = function() {
+      $('#filter-tree').treeview({
+        data: FILTER_OPTIONS,
+        highlightSelected: false,
+        levels: 1,
+        showBorder: false,
+        showCheckbox: true
+      })
+    };
+
+    $scope.applyFilters = function() {
+      var checkedFilters = $('#filter-tree').treeview('getChecked');
+      if (checkedFilters.length > 0) {
+        $scope.itemsInCurrentLocation = [];
+        $scope.isBrowsing = false;
+        checkedFilters.forEach(function(item) {
+          $scope.loadItemsInLocation(item.path);
+        });
+      }
+    };
+
+    $scope.clearFilters = function() {
+      $('#filter-tree').treeview('uncheckAll');
+    };
 
   }
   storeApp.controller('StoreController', StoreController);
