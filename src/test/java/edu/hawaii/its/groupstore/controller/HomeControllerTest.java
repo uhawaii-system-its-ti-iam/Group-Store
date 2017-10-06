@@ -113,7 +113,7 @@ public class HomeControllerTest {
         // Logged in already, URL redirects back to home page.
         mockMvc.perform(get("/login"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/user"));
+                .andExpect(view().name("redirect:/home"));
     }
 
     @Test

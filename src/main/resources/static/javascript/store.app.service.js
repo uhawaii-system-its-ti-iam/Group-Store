@@ -1,5 +1,5 @@
 (function() {
-  storeApp.factory('dataProvider', function($http) {
+  storeApp.factory('dataProvider', ['$http', function($http) {
     return {
       loadData: function(callback, url) {
         return $http.get(encodeURI(url))
@@ -8,6 +8,6 @@
             });
       },
     }
-  });
+  }]);
 
 })();

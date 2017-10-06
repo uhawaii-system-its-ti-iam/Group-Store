@@ -1,5 +1,8 @@
 (function() {
-  function GroupConfigurationController($scope, CartService, $uibModalInstance) {
+
+  GroupConfigurationController.$inject = ['$scope', '$uibModalInstance', 'CartService'];
+
+  function GroupConfigurationController($scope, $uibModalInstance, CartService) {
 
     /** The possible ways for groups to be configured. The properties are just the number of groups selected */
     $scope.vennOptions = {
@@ -142,6 +145,6 @@
     }
 
   }
-
   storeApp.controller('GroupConfigurationController', GroupConfigurationController);
+
 })();
