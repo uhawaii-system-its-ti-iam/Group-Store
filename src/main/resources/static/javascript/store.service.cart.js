@@ -1,6 +1,5 @@
 (function() {
-
-  storeApp.factory('CartService', function($localStorage) {
+  storeApp.factory('CartService', ['$localStorage', function($localStorage) {
     var cart = [];
     return {
       /**
@@ -51,6 +50,6 @@
         return cart.length;
       }
     }
-  });
+  }]);
 
 })();

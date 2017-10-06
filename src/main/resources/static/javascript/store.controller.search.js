@@ -1,5 +1,8 @@
 (function() {
-  function StoreController($scope, dataProvider, FILTER_OPTIONS, CartService, STORE_HOME, $uibModal) {
+
+  StoreController.$inject = ['$scope', '$uibModal', 'CartService', 'dataProvider', 'FILTER_OPTIONS', 'STORE_HOME'];
+
+  function StoreController($scope, $uibModal, CartService, dataProvider, FILTER_OPTIONS, STORE_HOME) {
 
     /** User's current location */
     var currentLocation;
