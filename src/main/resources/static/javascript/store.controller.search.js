@@ -127,7 +127,7 @@
           })
           .finally(function() {
             $scope.loading = false;
-          })
+          });
     };
 
     /**
@@ -152,7 +152,7 @@
      */
     $scope.addToCart = function(group) {
       CartService.addToCart(group.name);
-    }
+    };
 
     /**
      * Removes the specified group from the cart.
@@ -208,7 +208,7 @@
         }, groupsUrl)
             .finally(function() {
               $scope.loading = false;
-            })
+            });
       }
     };
 
@@ -346,7 +346,7 @@
         levels: 1,
         showBorder: false,
         showCheckbox: true
-      })
+      });
     };
 
     /**
