@@ -22,13 +22,14 @@
     /** User's query when executing a search */
     $scope.queryEntered;
 
+    /** Whether or not to show the loading spinner when performing asynchronous requests */
     $scope.loading;
 
     /** Used for displaying alerts for various errors */
     $scope.errorMessages = {
       notEnoughCharacters: false,
       noResultsFound: false,
-    }
+    };
 
     // $scope.filterTree = [];
 
@@ -216,6 +217,9 @@
       $scope.goToLocation(currentLocation);
     };
 
+    /**
+     * Opens a modal that allows users to select how they want to configure their groups in their cart.
+     */
     $scope.openGroupConfiguration = function() {
       var modal = $uibModal.open({
         ariaLabelledBy: 'modal-title',
@@ -309,16 +313,29 @@
       return group.substring(lastSemicolonPosition + 1, group.length);
     };
 
+    /**
+     * Gets the location of an item in the store given its path.
+     * @example the item 'hawaii.edu:store:any-dataOrigin:aff:any-org:casual ' is located in
+     * 'hawaii.edu:store:any-dataOrigin:aff:any-org'
+     * @param {string} path - the full path of the item
+     * @returns {string} the location of the item
+     */
     $scope.getLocationOfItem = function(path) {
       return path.substring(0, path.lastIndexOf(':'));
     };
 
+    /**
+     * Closes all error message alerts.
+     */
     $scope.closeErrorMessages = function() {
       _.forOwn($scope.errorMessages, function(_, key) {
         $scope.errorMessages[key] = false;
       });
     };
 
+    /**
+     * Creates the filter tree to the left of the store.
+     */
     $scope.buildFilterTree = function() {
       $('#filter-tree').treeview({
         data: FILTER_OPTIONS,
@@ -329,6 +346,9 @@
       })
     };
 
+    /**
+     * Applies the filters checked by the user and loads the items into the table.
+     */
     $scope.applyFilters = function() {
       var checkedFilters = $('#filter-tree').treeview('getChecked');
       if (checkedFilters.length > 0) {
@@ -340,6 +360,9 @@
       }
     };
 
+    /**
+     * Unchecks the filters selected by the user.
+     */
     $scope.clearFilters = function() {
       $('#filter-tree').treeview('uncheckAll');
     };
