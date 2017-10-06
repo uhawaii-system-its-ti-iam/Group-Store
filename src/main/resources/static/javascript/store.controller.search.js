@@ -340,6 +340,10 @@
       }
     };
 
+    $scope.clearFilters = function() {
+      $('#filter-tree').treeview('uncheckAll');
+    };
+
   }
   storeApp.controller('StoreController', StoreController);
 
