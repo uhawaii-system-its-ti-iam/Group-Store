@@ -263,24 +263,6 @@ td.uh-pre {
 
 /* -------------------------------------------------------- */
 
-.breadcrumb.breadcrumb-header {
-    padding: 0px 0px 0px 0px;
-    margin-bottom: 0px;
-    line-height: 17.6px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.breadcrumb-header .active {
-    color: #333;
-}
-
-.breadcrumb-header > li + li:before {
-    color: #ccc;
-    content: ":";
-    padding: 0 5px;
-}
-
 .panel-footer-reduced {
     padding-bottom: 4.3px;
     padding-top: 4.3px;
@@ -294,4 +276,16 @@ td.uh-pre {
     transform: -webkit-translate(-50%, -50%);
     transform: -moz-translate(-50%, -50%);
     transform: -ms-translate(-50%, -50%);
+}
+
+.breadcrumb-path {
+    background-color: white;
+    padding: 0px 0px 0px 0px;
+    margin-bottom: 10px;
+    margin-top: -5px;
+}
+
+.breadcrumb-path > li + li:before {
+    content: ":";
+    padding: 0 5px;
 }
