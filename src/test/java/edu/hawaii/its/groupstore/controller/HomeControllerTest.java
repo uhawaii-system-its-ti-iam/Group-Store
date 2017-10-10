@@ -169,4 +169,20 @@ public class HomeControllerTest {
                 .andExpect(status().is3xxRedirection());
     }
 
+    @Test
+    @WithAnonymousUser
+    public void searchViaAnonymous() throws Exception {
+        mockMvc.perform(get("/search"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern(casLoginUrl + "**"));
+    }
+
+    @Test
+    @WithMockUhUser
+    public void searchViaUh() throws Exception {
+        mockMvc.perform(get("/search"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("search"));
+    }
+
 }
