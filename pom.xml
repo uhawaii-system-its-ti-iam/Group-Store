@@ -5,8 +5,8 @@
 
     <artifactId>edu.hawaii.its</artifactId>    
     <packaging>war</packaging>
-    <name>casdemo</name>
-    <description>University of Hawaii CAS Demonstration App</description>
+    <name>groupstore</name>
+    <description>University of Hawaii Group Store</description>
     <version>1.1</version>
 
     <parent>
